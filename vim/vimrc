@@ -1,0 +1,82 @@
+" load pathogen
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
+set bg=dark
+set textwidth=0
+
+set wildignore+=*.o,*.obj,.git,*.pyc
+
+if has('gui_running')
+
+    colorscheme solarized
+
+	set cursorline
+	set number
+
+	" Control-Shift-PageUp drags the active tab page to the left (wraps around)
+	imap <silent> <C-S-PageUp> <C-o>:call <Sid>DragLeft()<Cr>
+	nmap <silent> <C-S-PageUp> :call <Sid>DragLeft()<Cr>
+
+	function! s:DragLeft()
+		let n = tabpagenr()
+		execute 'tabmove' (n == 1 ? '' : n - 2)
+		let &showtabline = &showtabline
+	endfunction
+
+	" Control-Shift-PageDown drags the active tab page to the right (wraps
+	" around
+	imap <silent> <C-S-PageDown> <C-o>:call <Sid>DragRight()<Cr>
+	nmap <silent> <C-S-PageDown> :call <Sid>DragRight()<Cr>
+
+	function! s:DragRight()
+		let n = tabpagenr()
+		execute 'tabmove' (n == tabpagenr('$') ? 0 : n)
+		let &showtabline = &showtabline
+	endfunction
+endif
+
+" encoding
+set termencoding=utf-8
+set encoding=utf-8
+set nolist
+
+" basic options
+set cmdheight=1
+set history=1000
+set nocompatible			" use vim defaults
+set noerrorbells			" no error beepz
+set novisualbell			" turn off visual bell
+set shortmess+=aIt 			" abbreviate messages
+set showcmd					" display incomplete commands
+set hlsearch				" highlight search
+set showfulltag				" add context from around the tag definition (?)
+set showmatch				" highlight matching paren, bracket, brace, etc
+set showmode				" display mode at the bottom
+set title					" show title
+set titlestring=VIM:\ %<%F	" define title
+set ttyfast					" make things smoother (?)
+set undolevels=2000			" undo levels
+set viminfo='1000,f1,:1000,/1000
+
+set wildmode=longest:full	" wildcard behave more like bash
+set wildmenu				" use wildcard completion
+
+set nobackup				" no backup file
+set nowritebackup			" don't write that shit
+set noswapfile				" don't care about swapping
+
+" indent settings
+set ai						" set autoindent
+set backspace=2
+set shiftwidth=4
+set tabstop=4
+
+" folding
+set foldmethod=marker
+set mouse=a
+
+" search options
+set ignorecase
+
+
