@@ -5,6 +5,9 @@ call pathogen#helptags()
 set bg=dark
 set textwidth=0
 
+" load appropriate plugins / indentations
+"filetype plugin indent on
+
 set wildignore+=*.o,*.obj,.git,*.pyc
 
 if has('gui_running')
