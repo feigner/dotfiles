@@ -10,35 +10,6 @@ filetype plugin indent on
 
 set wildignore+=*.o,*.obj,.git,*.pyc
 
-if has('gui_running')
-
-    colorscheme solarized
-
-	set cursorline
-	set number
-
-	" Control-Shift-PageUp drags the active tab page to the left (wraps around)
-	imap <silent> <C-S-PageUp> <C-o>:call <Sid>DragLeft()<Cr>
-	nmap <silent> <C-S-PageUp> :call <Sid>DragLeft()<Cr>
-
-	function! s:DragLeft()
-		let n = tabpagenr()
-		execute 'tabmove' (n == 1 ? '' : n - 2)
-		let &showtabline = &showtabline
-	endfunction
-
-	" Control-Shift-PageDown drags the active tab page to the right (wraps
-	" around
-	imap <silent> <C-S-PageDown> <C-o>:call <Sid>DragRight()<Cr>
-	nmap <silent> <C-S-PageDown> :call <Sid>DragRight()<Cr>
-
-	function! s:DragRight()
-		let n = tabpagenr()
-		execute 'tabmove' (n == tabpagenr('$') ? 0 : n)
-		let &showtabline = &showtabline
-	endfunction
-endif
-
 " encoding
 set termencoding=utf-8
 set encoding=utf-8
