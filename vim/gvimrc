@@ -32,7 +32,7 @@ if has('gui_macvim')
 	set guioptions=-t
 	
 	" transparency (use experimental renderer)
-	set transparency=10
+	set transparency=5
 
 	" set Command-T to command-t
 	macmenu &File.New\ Tab key=<nop>
