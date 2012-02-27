@@ -58,4 +58,5 @@ set mouse=a
 " search options
 set ignorecase
 
-
+" syntastic
+let g:syntastic_check_on_open=1
