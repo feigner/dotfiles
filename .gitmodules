@@ -1,4 +1,4 @@
-[submodule "vim/bundle/command-t"]
+[ddisubmodule "vim/bundle/command-t"]
 	path = vim/bundle/command-t
 	url = git://git.wincent.com/command-t.git
 [submodule "vim/bundle/nerdtree"]
@@ -22,12 +22,14 @@
 [submodule "vim/bundle/snipmate"]
 	path = vim/bundle/snipmate
 	url = https://github.com/msanders/snipmate.vim.git
+    ignore = dirty
 [submodule "vim/bundle/rainbow_parentheses"]
 	path = vim/bundle/rainbow_parentheses
 	url = https://github.com/kien/rainbow_parentheses.vim.git
 [submodule "vim/bundle/vim-clojure"]
 	path = vim/bundle/vim-clojure
-	url = https://github.com/vim-scripts/VimClojure.git
+    url = https://github.com/vim-scripts/VimClojure.git
+    ignore = dirty
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
