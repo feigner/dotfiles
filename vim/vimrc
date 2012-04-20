@@ -65,6 +65,9 @@ vnoremap <tab> %
 let vimclojure#HighlightBuiltins=1
 let vimclojure#ParenRainbow=1
 
+" rainbow parens
+au VimEnter * RainbowParenthesesToggle
+
 " syntastic
 let g:syntastic_check_on_open=1
 

@@ -13,12 +13,21 @@
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/bundle/syntastic"]
-	path = vim/bundle/syntastic
-	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/bundle/vim-easymotion"]
+	path = vim/bundle/vim-easymotion
+	url = https://github.com/Lokaltog/vim-easymotion.git
+[submodule "vim/bundle/ack"]
+	path = vim/bundle/ack
+	url = https://github.com/mileszs/ack.vim.git
 [submodule "vim/bundle/snipmate"]
 	path = vim/bundle/snipmate
 	url = https://github.com/msanders/snipmate.vim.git
-[submodule "vim/bundle/vimclojure"]
-    path = vim/bundle/vimclojure
-    url = https://github.com/vim-scripts/VimClojure.git
+[submodule "vim/bundle/rainbow_parentheses"]
+	path = vim/bundle/rainbow_parentheses
+	url = https://github.com/kien/rainbow_parentheses.vim.git
+[submodule "vim/bundle/vim-clojure"]
+	path = vim/bundle/vim-clojure
+	url = https://github.com/vim-scripts/VimClojure.git
+[submodule "vim/bundle/syntastic"]
+	path = vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
