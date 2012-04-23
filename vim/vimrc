@@ -65,6 +65,9 @@ vnoremap <tab> %
 let vimclojure#HighlightBuiltins=1
 let vimclojure#ParenRainbow=1
 
+" easymotion (mapping double leader -> leader)
+let g:EasyMotion_leader_key = '<Leader>' 
+
 " rainbow parens
 au VimEnter * RainbowParenthesesToggle
 
