@@ -64,12 +64,21 @@ vnoremap <tab> %
 " VimClojure
 let vimclojure#HighlightBuiltins=1
 let vimclojure#ParenRainbow=1
+"let vimclojure#WantNailgun = 1
 
 " easymotion (mapping double leader -> leader)
 let g:EasyMotion_leader_key = '<Leader>' 
 
 " rainbow parens
 au VimEnter * RainbowParenthesesToggle
+
+" This set of commands will only highlight the trailing whitespace on opening the buffer and leaving the insert mode.
+highlight ExtraWhitespace ctermbg=red guibg=red
+au ColorScheme * highlight ExtraWhitespace guibg=red
+au BufEnter * match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhiteSpace /\s\+$/
+
 
 " syntastic
 let g:syntastic_check_on_open=1
