@@ -1,7 +1,7 @@
 if has('gui_running')
 
-    "colorscheme solarized
-    colorscheme Tomorrow-Night
+    colorscheme solarized
+    "colorscheme Tomorrow-Night
 
 	set cursorline
 	set number
