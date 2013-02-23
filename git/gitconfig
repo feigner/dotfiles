@@ -1,0 +1,11 @@
+[user]
+        name = eric feigner
+        email = feigner@gmail.com
+
+[alias]
+        st = status
+        di = diff
+        co = checkout
+        ci = commit
+        br = branch
+        sh = stash
