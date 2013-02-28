@@ -1,11 +1,43 @@
 [user]
-        name = eric feigner
-        email = feigner@gmail.com
+    name = eric feigner
+    email = feigner@gmail.com
+
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+
+[color "branch"]
+    current = red reverse
+    local = blue
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
 
 [alias]
-        st = status
-        di = diff
-        co = checkout
-        ci = commit
-        br = branch
-        sh = stash
+    # general
+    st = status -s
+    co = checkout
+    ci = commit
+    cm = commit -m
+    br = branch
+    sh = stash
+
+    #list commands
+    le = log --oneline --decorate
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    lds = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+
+    # diff
+    diff = diff --word-diff
+    d = diff --word-diff
