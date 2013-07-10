@@ -40,6 +40,8 @@ set nobackup				" no backup file
 set nowritebackup			" don't write that shit
 set noswapfile				" don't care about swapping
 
+set laststatus=2            " make sure vim-airline shows up
+
 " indent settings
 set expandtab           " enter spaces when tab is pressed
 set textwidth=120       " break lines when line length increases
