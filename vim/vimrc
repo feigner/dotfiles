@@ -18,41 +18,40 @@ set nolist
 " basic options
 set cmdheight=1
 set history=1000
-set nocompatible			" use vim defaults
-set noerrorbells			" no error beepz
-set novisualbell			" turn off visual bell
-set shortmess+=aIt 			" abbreviate messages
-set showcmd				" display incomplete commands
-set hlsearch				" highlight search
-set showfulltag				" add context from around the tag definition (?)
-set showmatch				" highlight matching paren, bracket, brace, etc
-set showmode				" display mode at the bottom
-set title				" show title
-set titlestring=VIM:\ %<%F		" define title
-set ttyfast				" make things smoother (?)
-set undolevels=2000			" undo levels
+set nocompatible            " use vim defaults
+set noerrorbells            " no error beepz
+set novisualbell            " turn off visual bell
+set shortmess+=aIt          " abbreviate messages
+set showcmd                 " display incomplete commands
+set hlsearch                " highlight search
+set showfulltag             " add context from around the tag definition (?)
+set showmatch               " highlight matching paren, bracket, brace, etc
+set showmode                " display mode at the bottom
+set title                   " show title
+set titlestring=VIM:\ %<%F  " define title
+set ttyfast                 " make things smoother (?)
+set undolevels=2000         " undo levels
 set viminfo='1000,f1,:1000,/1000
 
-set wildmode=longest:full		" wildcard behave more like bash
-set wildmenu				" use wildcard completion
+set wildmode=longest:full   " wildcard behave more like bash
+set wildmenu                " use wildcard completion
 
-set nobackup				" no backup file
-set nowritebackup			" don't write that shit
-set noswapfile				" don't care about swapping
-
-set laststatus=2            " make sure vim-airline shows up
+set nobackup                " no backup file
+set nowritebackup           " don't write that shit
+set noswapfile              " don't care about swapping
 
 " indent settings
-set expandtab           " enter spaces when tab is pressed
-set textwidth=120       " break lines when line length increases
-set tabstop=4           " use 4 spaces to represent tab
+set expandtab               " enter spaces when tab is pressed
+set textwidth=120           " break lines when line length increases
+set tabstop=4               " use 4 spaces to represent tab
 set softtabstop=4
-set shiftwidth=4        " number of spaces to use for auto indent
-set autoindent          " copy indent from current line when starting a new line
-set guifont=Menlo\ for\ Powerline
+set shiftwidth=4            " number of spaces to use for auto indent
+set autoindent              " copy indent from current line when starting a new line
 
-" make backspaces more powerfull
-set backspace=indent,eol,start
+set backspace=indent,eol,start  " make backspaces more powerfull
+
+" whitespace helper (:set list / :set nolist)
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 " folding
 set foldmethod=marker
@@ -65,12 +64,12 @@ nnoremap <tab> %                    " map tab to % for bracket matching
 vnoremap <tab> %
 
 " VimClojure
-let vimclojure#HighlightBuiltins=1
-let vimclojure#ParenRainbow=1
+"let vimclojure#HighlightBuiltins=1
+"let vimclojure#ParenRainbow=1
 "let vimclojure#WantNailgun = 1
 
 " easymotion (mapping double leader -> leader)
-let g:EasyMotion_leader_key = '<Leader>' 
+let g:EasyMotion_leader_key = '<Leader>'
 
 " rainbow parens
 au VimEnter * RainbowParenthesesToggle
@@ -82,12 +81,5 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
-" airline
-let g:airline_enable_syntastic=1
-let g:airline_theme='solarized2'
-let g:airline_powerline_fonts=1
-
-
 " syntastic
 let g:syntastic_check_on_open=1
-
