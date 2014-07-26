@@ -41,3 +41,5 @@
     # diff
     diff = diff --word-diff
     d = diff --word-diff
+[core]
+	editor = /usr/bin/vim
