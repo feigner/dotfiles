@@ -39,6 +39,15 @@ source $ZSH/oh-my-zsh.sh
 
 # ALIAS
 alias glog="git log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'"
+alias glogg="git --no-pager log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'"
+alias cdaa="cd ~/Projects/alternative-apparel"
+
+# FUNCTIONS
+hr(){printf '=%.0s' $(seq $COLUMNS)} # horizontal rule
+__git_files () { _wanted files expl 'local files' _files } # speed up git autocomplete
+
+# syntax-highlighting `less` (requires source-highlight)
+export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
 
 # PATH
 
@@ -54,11 +63,4 @@ PATH="/usr/local/share/python:${PATH}"
 # node
 PATH="/usr/local/share/npm/bin:${PATH}"
 
-# AWS (RDS)
-export JAVA_HOME="$(/usr/libexec/java_home)"
-export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
-export EC2_CERT="$(/bin/ls "$HOME"/.ec2/cert-*.pem | /usr/bin/head -1)"
-export AWS_RDS_HOME="/usr/local/Cellar/rds-command-line-tools/1.12.002/libexec"
-
 export PATH
-

@@ -6,13 +6,6 @@ if has('gui_running')
     set cursorline
     set number
 
-    " airline / powerline
-    set guifont=Menlo\ for\ Powerline
-    set laststatus=2 " make sure vim-airline shows up
-    let g:airline_enable_syntastic=1
-    let g:airline_theme='solarized2'
-    let g:airline_powerline_fonts=1
-
     " Control-Shift-PageUp drags the active tab page to the left (wraps around)
     imap <silent> <C-S-PageUp> <C-o>:call <Sid>DragLeft()<Cr>
     nmap <silent> <C-S-PageUp> :call <Sid>DragLeft()<Cr>

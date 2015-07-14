@@ -81,5 +81,14 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
+" airline / powerline
+set guifont=Menlo\ for\ Powerline
+set laststatus=2 " make sure vim-airline shows up
+let g:airline_enable_syntastic=1
+let g:airline_theme='solarized2'
+let g:airline_powerline_fonts=1
+
 " syntastic
 let g:syntastic_check_on_open=1
+" ignore lines > 79 chars
+let g:syntastic_python_checker_args='--ignore=E501' 
