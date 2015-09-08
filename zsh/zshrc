@@ -42,9 +42,9 @@ alias cdp="cd ~/Projects"
 alias cds="cd ~/Projects/stumptown-v2"
 
 # ALIAS
+alias vag="vagrant"
 alias glog="git log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'"
 alias glogg="git --no-pager log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'"
-alias cdaa="cd ~/Projects/alternative-apparel"
 
 # FUNCTIONS
 hr(){printf '=%.0s' $(seq $COLUMNS)} # horizontal rule
