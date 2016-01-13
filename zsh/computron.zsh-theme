@@ -8,15 +8,21 @@ white=$FG[253]
 
 # prompt
 PROMPT='
-%{$purp%}[%{$fg[$NCOLOR]%}%B%n%b%{$fb_bold[gray]%}@%{$white%}%m%{$reset_color%}:%45<...<%~%<<%{$purp%}]$reset_color $(git_prompt_info)
-%{$white%}→%{$reset_color%} '
-RPROMPT=''
+%{$terminfo[bold]$purp%}[\
+%{$fg[cyan]%}%n\
+%{$purp%}@\
+%{$fg[green]%}%m\
+%{$fg[white]%}:\
+%{$terminfo[bold]$fg[white]%}%45<...<%~%<<%{$reset_color%}\
+%{$terminfo[bold]$purp%}]%{$reset_color%} \
+$(git_prompt_info)
+%{$terminfo[bold]$purp%}→ %{$reset_color%}'
 
 # git theming
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[gray]%}(%{$fg_no_bold[yellow]%}%B"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%b%{$fg_bold[gray]%})%{$reset_color%} "
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}✱"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✱"
 
 # ls colors, stolen from r2 via http://geoff.greer.fm/lscolors/
 export LSCOLORS="Gxfxcxdxbxegedabagacad"

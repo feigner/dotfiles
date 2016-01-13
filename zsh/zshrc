@@ -6,7 +6,8 @@ ZSH_CUSTOM=$HOME/dotfiles/zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="eff"
+ZSH_THEME="computron"
+#ZSH_THEME="eff"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -58,8 +59,8 @@ export PATH=~/bin/:/usr/local/bin/:/usr/bin:/bin:/usr/sbin:/sbin
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Base16 Shell
-# BASE16_SHELL="$HOME/.config/base16-shell/base16-monokai.dark.sh"
-# [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+BASE16_SHELL="$HOME/.config/base16-shell/base16-monokai.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 # direnv
 # eval "$(direnv hook zsh)"
