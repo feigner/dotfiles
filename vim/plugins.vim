@@ -7,7 +7,6 @@ Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/tpope/vim-surround.git'
 Plug 'https://github.com/bling/vim-airline'
 Plug 'https://github.com/Lokaltog/vim-easymotion.git'
-Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/ivanov/vim-ipython.git'
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 Plug 'https://github.com/ajh17/VimCompletesMe.git'

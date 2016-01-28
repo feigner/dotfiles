@@ -1,7 +1,8 @@
-# eff
+# C O M P U T R O N
 # features:
-#   _ sexy purp (stolen from r2)
+#   _ sweettart colors
 #   _ chop cwd to 45 chars
+#   _ dirty git prompt
 
 purp=$FG[097]
 white=$FG[253]

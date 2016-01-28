@@ -18,7 +18,6 @@ noremap <Right> <NOP>
 
 " basic options
 set hidden
-set hidden
 set cursorline
 set number
 set cmdheight=1
@@ -42,8 +41,8 @@ set clipboard=unnamed       " set anonymous register to point to system clipboar
 set wildmenu                " use wildcard completion
 
 set nobackup                " no backup file
-set nowritebackup           " don't write that shit
-set noswapfile              " don't care about swapping
+set nowritebackup           " don't write
+set noswapfile              " don't care
 
 " indent settings
 filetype plugin indent on
@@ -132,7 +131,7 @@ let g:syntastic_check_on_open=1
 let g:syntastic_python_checker_args='--ignore=E501'
 syntax on
 
-" gitgutter
+" gitgutter update refresh delay
 set updatetime=250
 
 " This set of commands will only highlight the trailing whitespace on opening the buffer and leaving the insert mode.
@@ -145,8 +144,7 @@ au InsertLeave * match ExtraWhiteSpace /\s\+$/
 " whitespace helper (:set list / :set nolist)
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
-" To open a new empty buffer
-" This replaces :tabnew which I used to bind to this mapping
+" Open a new empty buffer
 nmap <leader>T :enew<cr>
 
 " Move to the next buffer
@@ -158,7 +156,30 @@ nmap <leader>[ :bprevious<CR>
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR><Paste>
 
+" <3 FZF
 nnoremap <silent> <Leader><Leader> :FZF -m<CR>
+
+" FZF BUFFERS
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+nnoremap <silent> <Leader><Space> :call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\ })<CR>
+
+" NERDTree
+map <C-n> :NERDTreeToggle<cr>
 
 " auto-reload vimrc/gvimrc
 augroup myvimrc
