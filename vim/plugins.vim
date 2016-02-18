@@ -9,7 +9,7 @@ Plug 'https://github.com/bling/vim-airline'
 Plug 'https://github.com/Lokaltog/vim-easymotion.git'
 Plug 'https://github.com/ivanov/vim-ipython.git'
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
-Plug 'https://github.com/ajh17/VimCompletesMe.git'
+"Plug 'https://github.com/ajh17/VimCompletesMe.git'
 Plug 'https://github.com/paranoida/vim-airlineish.git'
 Plug 'chriskempson/base16-vim'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
