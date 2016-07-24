@@ -1,2 +1,5 @@
+.DS_Store
+config/nvim
+vim/init.vim
 vim/.netrwhist
 vim/plugged

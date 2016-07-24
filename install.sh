@@ -9,4 +9,14 @@ ln -s $DOTFILES/alias/aliasrc $HOME/.aliasrc
 ln -s $DOTFILES/vim $HOME/.vim
 ln -s $DOTFILES/vim/vimrc $HOME/.vimrc
 ln -s $DOTFILES/config $HOME/.config
-ln -s $DOTFILES/vim $HOME/.config/nvim # neovim
+
+# neovim
+ln -s $DOTFILES/vim $HOME/.config/nvim
+ln -s $HOME/.vimrc $DOTFILES/vim/init.vim
+
+echo "\n\nPOST INSTALL TASKS:"
+echo "  homebrew: /usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+echo "  brew install neovim/neovim/neovim"
+echo "  brew install zsh"
+echo "  git submodule init / git submodule update"
+echo "  chsh -s \$(which zsh)"
