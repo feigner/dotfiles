@@ -27,6 +27,7 @@ set noerrorbells            " no error beepz
 set novisualbell            " turn off visual bell
 set shortmess+=aIt          " abbreviate messages
 set showcmd                 " display incomplete commands
+set incsearch               " search as characters are entered
 set hlsearch                " highlight search
 set showfulltag             " add context from around the tag definition (?)
 set showmatch               " highlight matching paren, bracket, brace, etc
