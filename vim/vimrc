@@ -16,6 +16,9 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
+" jk chord -> esc
+inoremap jk <esc>
+
 " basic options
 set hidden
 set cursorline
