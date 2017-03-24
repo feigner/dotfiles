@@ -145,6 +145,10 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
+" transparent BG (if set by term)
+hi NonText ctermbg=none
+hi Normal guibg=NONE ctermbg=NONE
+
 " whitespace helper (:set list / :set nolist)
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
