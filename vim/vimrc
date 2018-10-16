@@ -82,7 +82,7 @@ augroup vimrcEX
   autocmd FileType sh setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
 
-set backspace=indent,eol,start  " make backspaces more powerfull
+set backspace=indent,eol,start  " make backspaces more powerful
 
 " folding
 set foldmethod=marker
@@ -136,7 +136,12 @@ set showtabline=2
 let g:syntastic_check_on_open=1
 " ignore lines > 79 chars
 let g:syntastic_python_flake8_args='--ignore=E501'
+let g:syntastic_javascript_checkers=['eslint']
 syntax on
+
+" required for ambv/black
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:black_virtualenv = '~/.local/black-venv'
 
 " gitgutter update refresh delay
 set updatetime=250
