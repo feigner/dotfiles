@@ -143,7 +143,8 @@ syntax on
 " required for ambv/black
 let g:python3_host_prog='/usr/local/bin/python3'
 let g:black_virtualenv='~/.local/black-venv'
-"let g:black_skip_string_normalization=1
+" disable single to double quotes
+let g:black_skip_string_normalization=1
 
 " gitgutter update refresh delay
 set updatetime=250
@@ -195,6 +196,12 @@ nnoremap <silent> <Leader>b :call fzf#run({
 \   'options': '+m',
 \   'down':    len(<sid>buflist()) + 2
 \ })<CR>
+
+" fzf splits
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-h': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " auto-reload vimrc/gvimrc
 augroup myvimrc
