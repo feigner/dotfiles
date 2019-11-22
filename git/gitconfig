@@ -6,6 +6,7 @@
     branch = auto
     diff = auto
     status = auto
+    ui = true
 
 [color "branch"]
     current = red reverse
@@ -17,6 +18,13 @@
     frag = magenta bold
     old = red bold
     new = green bold
+    whitespace = red reverse
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
 
 [color "status"]
     added = yellow
@@ -41,5 +49,8 @@
     # diff
     diff = diff --word-diff
     d = diff --word-diff
+
 [core]
 	editor = vim
+	pager = diff-so-fancy #| less --tabs=4 -RFX
+
