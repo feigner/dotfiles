@@ -10,6 +10,7 @@ ln -s $DOTFILES/alias/aliasrc $HOME/.aliasrc
 ln -s $DOTFILES/vim $HOME/.vim
 ln -s $DOTFILES/vim/vimrc $HOME/.vimrc
 ln -s $DOTFILES/config $HOME/.config
+ln -s $DOTFILES/hammerspoon $HOME/.hammerspoon
 
 # neovim
 ln -s $DOTFILES/vim $HOME/.config/nvim
