@@ -7,3 +7,4 @@ alias weather="curl wttr.in"
 
 # rand
 alias vag="vagrant"
+alias cdp="cd ~/projects"
