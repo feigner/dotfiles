@@ -18,7 +18,21 @@ ln -s $HOME/.vimrc $DOTFILES/vim/init.vim
 
 echo "\n\nPOST INSTALL TASKS:"
 echo "  homebrew: /usr/bin/ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
-echo "  brew install neovim/neovim/neovim"
+echo "  brew install ag"
+echo "  brew install source-highlight"
+echo "  brew install diff-so-fancy"
+echo "  brew install --cask karabiner-elements"
+echo "  brew install macdown"
+
+echo "  brew install tmux"
+echo "    prefix + I in tmux to fetch plugins"
+
+echo "  sudo pip3 install neovim"
+echo "  sudo pip3 install virtualenv"
+echo "  brew install neovim"
+echo "    :PlugInstall"
+echo "    symlink nvim -> vim in /usr/local/bin"
+
 echo "  brew install zsh"
-echo "  git submodule init / git submodule update"
 echo "  chsh -s \$(which zsh)"
+echo "  git submodule init / git submodule update"
