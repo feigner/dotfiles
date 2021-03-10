@@ -3,3 +3,4 @@ config/nvim
 vim/init.vim
 vim/.netrwhist
 vim/plugged
+tmux/plugins
