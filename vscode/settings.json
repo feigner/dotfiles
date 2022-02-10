@@ -1,0 +1,72 @@
+{
+    "editor.minimap.enabled": false,
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "window.zoomLevel": -1,
+    "git.ignoreMissingGitWarning": true,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "vim.easymotion": true,
+    // TEMP: vim-sneak simulation has NO LABEL MODE support, switch to easymotion
+    // `s`, `S` are emulated by easymotion, but still enable sneak to make `<operator>z<char><char>` work.    
+    "vim.sneak": true,
+    "vim.normalModeKeyBindingsNonRecursive": [
+        // double leader for opening file "search"
+        {
+            "before": ["<leader>", "<leader>"],
+            "commands": ["workbench.action.quickOpen"],
+        },
+        // toggle comments
+        {
+            "before": ["<leader>", "c", "<space>"],            
+            "commands": ["editor.action.commentLine"],
+            "when": "editorTextFocus && !editorReadonly"
+        },
+        //
+        // easymotion 
+        //
+        // word forward
+        {
+            "before": ["<leader>", "w"],
+            "after": ["<leader>", "<leader>", "w"],
+        },
+        // word backward
+        {
+            "before": ["<leader>", "b"],
+            "after": ["<leader>", "<leader>", "b"],
+        },
+        // 2 char search global search
+        {
+            "before": ["<leader>", "s"],
+            "after": [ "<leader>", "<leader>", "2", "s" ]
+        },        
+        // emulate sneak (no label mode in sneak yet)
+        // forward
+        { 
+            "before": [ "s" ],
+            "after": [ "<leader>", "<leader>", "2", "f" ]
+        },
+        // backward
+        {
+            "before": [ "S" ],
+            "after": [ "<leader>", "<leader>", "2", "F" ]
+        },          
+
+    ],
+    "vim.visualModeKeyBindings": [
+        // toggle comments (visual / multiline)
+        {
+            "before": ["<leader>", "c", "<space>"],            
+            "commands": ["editor.action.commentLine"],
+            "when": "editorTextFocus && !editorReadonly"
+        },
+    ]
+}
