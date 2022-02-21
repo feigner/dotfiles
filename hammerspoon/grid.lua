@@ -1,19 +1,25 @@
+--[[
+    Simple window management
+    Supports three basic layouts:
+        4x3 grid -- mash + 1 -- small screens. two column layout (50% / 50%)
+        6x6 grid -- mash + 2 -- bigger screens. three column layout (33% / 33% / 33%)
+        12x6 grid -- mash + 3 -- bigger screens. three column layout (25% / 50% / 25%)
+--]]
+
+-- mash chords
 sizeUpMash = {"⌘", "⌥"}
 sizeDownMash = {"⌃", "⌥"}
 throwMash = {"⌘", "⌃", "shift"}
 
 -- defaults
-hs.grid.setGrid'6x6'
+hs.grid.setGrid('6x6')
 hs.grid.setMargins("15,15")
 hs.window.animationDuration = 0.0
 
--- mash + #: resize grid
-hs.hotkey.bind(mash, "2", function() setGrid('2x3'); end)
-hs.hotkey.bind(mash, "3", function() setGrid('3x6'); end)
-hs.hotkey.bind(mash, "4", function() setGrid('6x6'); end)
-hs.hotkey.bind(mash, "5", function() setGrid('9x6'); end)
-hs.hotkey.bind(mash, "6", function() setGrid('12x6'); end)
-hs.hotkey.bind(mash, "7", function() setGrid('15x6'); end)
+-- mash + #: change layout / resize
+hs.hotkey.bind(mash, "1", function() setGrid('4x3'); end)
+hs.hotkey.bind(mash, "2", function() setGrid('6x6'); end)
+hs.hotkey.bind(mash, "3", function() setGrid('12x6'); end)
 
 --  mash + `: move window to next screen
 hs.hotkey.bind(mash, "`", function() local win = getWinGridCell(); win:moveToScreen(win:screen():next()) end)
@@ -28,29 +34,38 @@ hs.hotkey.bind(mash, "return", function() hs.grid.maximizeWindow() end)
 hs.hotkey.bind(mash, ".", function() hs.grid.set(getWin(), '0,0 1x1'); end)
 
 --
+-- layout throwin'
 -- left / down / right + throwMash -- throw to left, center, right
 -- up + throwMash -- focus
 --
 
+-- map grid width to column width
+throwColWidth = { [4]=1/2, [6]=1/3, [12]=1/4 }
+
+-- left
 hs.hotkey.bind(throwMash, "left", function()
     local win, grid, cell = getWinGridCell()
-    setWin(win, 0, 0, grid.w/3, grid.h)
+    w = throwColWidth[grid.w]
+    setWin(win, 0, 0, grid.w * w, grid.h)
 end)
 
-
-hs.hotkey.bind(throwMash, "right", function()
-    local win, grid, cell = getWinGridCell()
-    print(grid.w, grid.w/3)
-    setWin(win, grid.w * 2/3, 0, grid.w/3, grid.h)
-end)
-
+-- middle
 hs.hotkey.bind(throwMash, "down", function()
     local win, grid, cell = getWinGridCell()
-    if grid.w > 2 then
-        setWin(win, grid.w/3, 0, grid.w/3, grid.h)
+    if grid.w > 4 then
+        w = throwColWidth[grid.w]
+        setWin(win, grid.w * w, 0, grid.w*(1-(2*w)), grid.h)
     end
 end)
 
+-- right
+hs.hotkey.bind(throwMash, "right", function()
+    local win, grid, cell = getWinGridCell()
+    w = throwColWidth[grid.w]
+    setWin(win, grid.w * (1-w), 0, grid.w * w, grid.h)
+end)
+
+-- focus
 hs.hotkey.bind(throwMash, "up", function()
     local win, grid, cell = getWinGridCell()
     setWin(win, grid.w/3, 0, grid.w/3, grid.h)
@@ -60,6 +75,7 @@ hs.hotkey.bind(throwMash, "up", function()
 end)
 
 --
+-- window movin'
 -- arrows + mash: move window w/ wrap
 --
 
@@ -88,12 +104,13 @@ hs.hotkey.bind(mash, "down", function()
 end)
 
 --
+-- window up sizin'
 -- arrows + sizeUpMash -- increase window sizing
 --
 
 hs.hotkey.bind(sizeUpMash, "left", function()
+    hs.grid.resizeWindowTaller()
     hs.grid.pushWindowLeft()
-    hs.grid.resizeWindowWider()
 end)
 
 hs.hotkey.bind(sizeUpMash, "right", function()
@@ -103,8 +120,8 @@ end)
 hs.hotkey.bind(sizeUpMash, "up", function()
     local win, grid, cell = getWinGridCell()
     if cell.y > 0 then
-        hs.grid.pushWindowUp()
         hs.grid.resizeWindowTaller()
+        hs.grid.pushWindowUp()
     end
 end)
 
@@ -114,6 +131,7 @@ hs.hotkey.bind(sizeUpMash, "down", function()
 end)
 
 --
+-- window down sizin'
 -- arrows + sizeDownMash -- decrease window sizing
 --
 
@@ -124,8 +142,8 @@ end)
 hs.hotkey.bind(sizeDownMash, "right", function()
     local win, grid, cell = getWinGridCell()
     if cell.w > 1 then
-        hs.grid.pushWindowRight()
         hs.grid.resizeWindowThinner()
+        hs.grid.pushWindowRight()
     end
 end)
 
