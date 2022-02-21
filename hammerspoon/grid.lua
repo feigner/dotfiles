@@ -35,8 +35,8 @@ hs.hotkey.bind(mash, ".", function() hs.grid.set(getWin(), '0,0 1x1'); end)
 
 --
 -- layout throwin'
--- left / down / right + throwMash -- throw to left, center, right
--- up + throwMash -- focus
+-- left / up / right + throwMash -- throw to left, center, right
+-- down + throwMash -- focus
 --
 
 -- map grid width to column width
@@ -50,7 +50,7 @@ hs.hotkey.bind(throwMash, "left", function()
 end)
 
 -- middle
-hs.hotkey.bind(throwMash, "down", function()
+hs.hotkey.bind(throwMash, "up", function()
     local win, grid, cell = getWinGridCell()
     if grid.w > 4 then
         w = throwColWidth[grid.w]
@@ -66,7 +66,7 @@ hs.hotkey.bind(throwMash, "right", function()
 end)
 
 -- focus
-hs.hotkey.bind(throwMash, "up", function()
+hs.hotkey.bind(throwMash, "down", function()
     local win, grid, cell = getWinGridCell()
     setWin(win, grid.w/3, 0, grid.w/3, grid.h)
     local winSize = win:size()
