@@ -1,0 +1,26 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+
+- link:
+    ~/.config/nvim: vim/
+    ~/.config/iterm2: iterm2
+    ~/.config/pgcli/config: pgcli/config
+    ~/.config/tmux: tmux
+    ~/.config/.ripgreprc: ripgrep/.ripgreprc
+    ~/.config/zsh: zsh
+    ~/.config/hammerspoon: hammerspoon
+    ~/.config/htop: htop
+    ~/.config/ranger: ranger
+    ~/Brewfile: homebrew/Brewfile
+    ~/.zshenv: zsh/.zshenv
+    ~/.gitconfig: git/.gitconfig
+    ~/.gitignore_global: git/.gitignore_global
+    ~/.hushlogin: hushlogin/.hushlogin
+    ~/Library/Application Support/Code/User/settings.json: vscode/settings.json
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]

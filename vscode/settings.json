@@ -1,8 +1,13 @@
 {
   "editor.minimap.enabled": false,
   "editor.fontLigatures": true,
-  "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
-  "workbench.colorTheme": "Visual Studio Dark",
+  "editor.fontFamily": "MesloLGSDZ Nerd Font, Fira Code, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 13,
+  "workbench.colorTheme": "Base16 Dark Monokai",
+  "workbench.editor.enablePreview": false,
+  "workbench.colorCustomizations": {
+     "statusBar.background": "#875fd7",
+  },
   "window.zoomLevel": -1,
   "git.ignoreMissingGitWarning": true,
   "[typescript]": {
@@ -28,7 +33,7 @@
     {
       "before": ["<leader>", "c", "<space>"],
       "commands": ["editor.action.commentLine"],
-       "when": "editorTextFocus && !editorReadonly"
+      "when": "editorTextFocus && !editorReadonly"
     },
     //
     // easymotion
@@ -68,5 +73,5 @@
       "when": "editorTextFocus && !editorReadonly"
     }
   ],
-  "debug.allowBreakpointsEverywhere": true
+  "debug.allowBreakpointsEverywhere": true,
 }
