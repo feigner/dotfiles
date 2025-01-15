@@ -113,6 +113,6 @@ function list_colors() {
     range=({0..15})
   fi
   for i in "${range[@]}"; do
-    printf "%3s: \x1b[38;5;${i}m██████████\x1b[0m\n" "$i"
+    printf "%3s: \x1b[38;5;${i}m██████████ Wu-Tang is for the children.\x1b[0m\n" "${i} "
   done
 }
