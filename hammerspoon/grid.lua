@@ -4,9 +4,12 @@
         4x3 grid -- mash + 1 -- small screens. two column layout (50% / 50%)
         6x6 grid -- mash + 2 -- bigger screens. three column layout (33% / 33% / 33%)
         12x6 grid -- mash + 3 -- bigger screens. three column layout (25% / 50% / 25%)
+        15x6 grid -- mash + 4 -- bigger screens. three column layout (20% / 60% / 20%)
 --]]
 
 -- mash chords
+-- mash = {"⌘", "⌃"} -- from init.lua
+mash = {"⌘", "⌃"}
 sizeUpMash = {"⌘", "⌥"}
 sizeDownMash = {"⌃", "⌥"}
 throwMash = {"⌘", "⌃", "shift"}
@@ -20,6 +23,7 @@ hs.window.animationDuration = 0.0
 hs.hotkey.bind(mash, "1", function() setGrid('4x3'); end)
 hs.hotkey.bind(mash, "2", function() setGrid('6x6'); end)
 hs.hotkey.bind(mash, "3", function() setGrid('12x6'); end)
+hs.hotkey.bind(mash, "4", function() setGrid('15x6'); end)
 
 --  mash + `: move window to next screen
 hs.hotkey.bind(mash, "`", function() local win = getWinGridCell(); win:moveToScreen(win:screen():next()) end)
@@ -40,7 +44,7 @@ hs.hotkey.bind(mash, ".", function() hs.grid.set(getWin(), '0,0 1x1'); end)
 --
 
 -- map grid width to column width
-throwColWidth = { [4]=1/2, [6]=1/3, [12]=1/4 }
+throwColWidth = { [4]=1/2, [6]=1/3, [12]=1/4, [15]=1/5}
 
 -- left
 hs.hotkey.bind(throwMash, "left", function()
@@ -50,7 +54,7 @@ hs.hotkey.bind(throwMash, "left", function()
 end)
 
 -- middle
-hs.hotkey.bind(throwMash, "up", function()
+hs.hotkey.bind(throwMash, "down", function()
     local win, grid, cell = getWinGridCell()
     if grid.w > 4 then
         w = throwColWidth[grid.w]
@@ -66,7 +70,7 @@ hs.hotkey.bind(throwMash, "right", function()
 end)
 
 -- focus
-hs.hotkey.bind(throwMash, "down", function()
+hs.hotkey.bind(throwMash, "up", function()
     local win, grid, cell = getWinGridCell()
     setWin(win, grid.w/3, 0, grid.w/3, grid.h)
     local winSize = win:size()
@@ -170,3 +174,33 @@ end
 
 function setWin(win, x, y, w, h) hs.grid.set(win, hs.geometry(x, y, w, h), win:screen()) end
 function setGrid(wh) hs.grid.setGrid(wh); hs.alert.show(wh) end
+
+--
+-- 20241205 -- firefox + 1password accessibility API bug workaround
+-- ref: https://github.com/Hammerspoon/hammerspoon/issues/3224#issuecomment-2155567633
+--
+local function axHotfix(win)
+    if not win then win = hs.window.frontmostWindow() end
+
+    local axApp = hs.axuielement.applicationElement(win:application())
+    local wasEnhanced = axApp.AXEnhancedUserInterface
+    axApp.AXEnhancedUserInterface = false
+
+    return function()
+        hs.timer.doAfter(hs.window.animationDuration * 2, function()
+            axApp.AXEnhancedUserInterface = wasEnhanced
+        end)
+    end
+end
+
+local function withAxHotfix(fn, position)
+    if not position then position = 1 end
+    return function(...)
+        local revert = axHotfix(select(position, ...))
+        fn(...)
+        revert()
+    end
+end
+local windowMT = hs.getObjectMetatable("hs.window")
+windowMT._setFrameInScreenBounds = windowMT._setFrameInScreenBounds or windowMT.setFrameInScreenBounds -- Keep the original, if needed
+windowMT.setFrameInScreenBounds = withAxHotfix(windowMT.setFrameInScreenBounds)

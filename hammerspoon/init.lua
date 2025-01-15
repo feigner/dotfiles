@@ -1,5 +1,3 @@
-mash = {"⌘", "⌃"}
-
 require "grid"
 
 -- auto config reloading
