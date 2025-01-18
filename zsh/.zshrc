@@ -7,7 +7,7 @@
 # basics
 #
 
-setopt autocd extendedglob nomatch interactive_comments
+setopt autocd extendedglob nomatch interactive_comments globdots
 
 #
 # history
@@ -40,6 +40,8 @@ autoload -Uz compinit; compinit    # init completion sys
 zstyle ':completion:*' completer _complete
 # case-insensitive and partial matching
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+# ensure tab completion shows both directories and files
+zstyle ':completion:*' file-patterns '*:all-files *(-/):directories'
 # enable menu selection for completion menu
 zstyle ':completion:*:*:*:*:*' menu select
 # colored menu

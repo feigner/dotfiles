@@ -69,6 +69,8 @@ cdp() {
             | fzf --select-1 --exit-0 --preview "tree -C '$projects_dir/{}' | head -100")
         if [[ -n "$selected" ]]; then
             cd "$projects_dir/$selected" || return
+        else
+            echo "no matches"
         fi
     fi
 }
