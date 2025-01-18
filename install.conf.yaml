@@ -15,6 +15,7 @@
     ~/.config/hammerspoon: hammerspoon
     ~/.config/htop: htop
     ~/.config/ranger: ranger
+    ~/.config/ghostty: ghostty
     ~/Brewfile: homebrew/Brewfile
     ~/.zshenv: zsh/.zshenv
     ~/.gitconfig: git/.gitconfig
