@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugins')
+call plug#begin('~/.config/nvim/plugins')
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
