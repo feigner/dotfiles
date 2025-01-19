@@ -161,8 +161,8 @@ let g:lightline = {
     \   'buffers': 'lightline#bufferline#buffers'},
     \ 'component_type': {
     \   'buffers': 'tabsel'},
-    \ 'separator': { 'left': '', 'right': '' },
-    \ 'subseparator': { 'left': '', 'right': '' },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' },
     \ 'tabline_separator': { 'left': '', 'right': ''},
     \ 'tabline_subseparator': { 'left': '', 'right': ''}}
 

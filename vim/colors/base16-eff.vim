@@ -10,23 +10,27 @@
 let s:gui00        = "212121"
 let g:base16_gui00 = "212121"
 
+" charcoal
 let s:gui01        = "303030"
 let g:base16_gui01 = "303030"
 
+" dark grey
 let s:gui02        = "444444"
 let g:base16_gui02 = "444444"
 
-" bright black
-let s:gui03        = "75715E"
-let g:base16_gui03 = "75715E"
+" stone taupe
+let s:gui03        = "747164"
+let g:base16_gui03 = "747164"
 
-let s:gui04        = "A59F85"
-let g:base16_gui04 = "A59F85"
+" muted olive
+let s:gui04        = "96917B"
+let g:base16_gui04 = "96917B"
 
 " white
 let s:gui05        = "F8F8F2"
 let g:base16_gui05 = "F8F8F2"
 
+" warm grey
 let s:gui06        = "F5F4F1"
 let g:base16_gui06 = "F5F4F1"
 
@@ -62,7 +66,7 @@ let g:base16_gui0D = "A8B8F4"
 let s:gui0E        = "C792EA"
 let g:base16_gui0E = "C792EA"
 
-" bright
+" burnt rose
 let s:gui0F        = "FF5370"
 let g:base16_gui0F = "FF5370"
 
@@ -163,7 +167,7 @@ endif
 " Theme setup
 hi clear
 syntax reset
-let g:colors_name = "base16-material-darker"
+let g:colors_name = "base16-eff"
 
 " Highlighting function
 " Optional variables are attributes and guisp

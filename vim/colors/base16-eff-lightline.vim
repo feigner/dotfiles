@@ -2,27 +2,27 @@
 " no inactive styles since I'm using laststatus=3 for a global window status
 " bar
 
-" base16 theme background (gui00)
-let s:window_bg = '#212121'
+" background
+let s:window_bg = '#212121' " Base 00
 
 " grays
-let s:gray_dark = '#303030'
-let s:gray_medium = '#444444'
+let s:gray_dark = '#303030'  " Base 01
+let s:gray_medium = '#444444'  " Base 02
 
 " tabline colors
-let s:tab_fg_inactive = s:gray_medium
+let s:tab_fg_inactive = "#606060"
 let s:tab_bg_inactive = s:window_bg
-let s:tab_fg_active = '#F9F8F5'
+let s:tab_fg_active = '#F9F8F5'  " Base 08
 let s:tab_bg_active = s:tab_fg_inactive
 let s:tab_middle_bg = s:window_bg
 
 " statusline colors
-let s:fg_primary = '#A59F85'
-let s:fg_secondary = '#808080'
-let s:bg_outer = '#949494'
+let s:fg_primary = '#96917B'  " Base 04
+let s:fg_secondary = '#808080' " (branch)
+let s:bg_outer = '#949494'     " (normal mode right bar)
 let s:bg_inner = s:gray_medium
 
-" Accent Colors
+" Accent Colors (more plush shades of base16)
 let s:yellow = '#D5C973'
 let s:orange = '#B0674B'
 let s:red = '#C96067'
@@ -40,8 +40,7 @@ let s:p.tabline.right = copy(s:p.tabline.middle)
 " normal mode
 let s:p.normal.left = [ [ s:gray_dark, s:green ], [ s:fg_primary, s:bg_inner ] ]
 let s:p.normal.middle = [ [ s:fg_secondary, s:gray_dark ] ]
-" let s:p.normal.right = [ [ s:gray_dark, s:bg_outer ], [ s:fg_primary, s:bg_inner ] ]
-let s:p.normal.right = [ [ s:gray_dark, s:green ], [ s:fg_primary, s:bg_inner ] ]
+let s:p.normal.right = [ [ s:gray_dark, s:bg_outer ], [ s:fg_primary, s:bg_inner ] ]
 let s:p.normal.error = [ [ s:red, s:gray_dark ] ]
 let s:p.normal.warning = [ [ s:yellow, s:gray_medium ] ]
 

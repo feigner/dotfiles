@@ -1,4 +1,4 @@
-## C O M P U T R O N prompt
+# C O M P U T R O N prompt
 # features:
 #   _ sweettart colors
 #   _ chop cwd to 45 chars
@@ -7,6 +7,7 @@
 purp=$FG[097]
 white=$FG[253]
 dark_grey=$FG[238]
+light_grey=$FG[241]
 bold="%B"
 reset="%{%f%}"
 
@@ -18,8 +19,9 @@ git_info() {
     branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
     dirty=$(git status --porcelain --untracked-files=no 2>/dev/null)
     if [[ -n $branch ]]; then
-      # Parentheses are bold gray, branch name is yellow, and dirty state is red if set
-      echo -n "${fg_bold[grey]}(${fg_bold[yellow]}${branch}${dirty:+${fg[red]}✱}${fg_bold[grey]})${reset}"
+      # Parentheses are bold grey, branch name is yellow, and dirty state is red if set
+      echo -n "${bold}${light_grey}(${fg[yellow]}${branch}${dirty:+${fg[red]}✱}${light_grey})${reset}"
+
     fi
   fi
 }
