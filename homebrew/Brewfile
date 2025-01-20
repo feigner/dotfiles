@@ -9,6 +9,7 @@ brew "glib"
 brew "cowsay"
 brew "diff-so-fancy"
 brew "docker"
+brew "docker-compose"
 brew "openjpeg"
 brew "fzf"
 brew "gcc"
@@ -62,6 +63,7 @@ cask "visual-studio-code"
 cask "alfred@4"
 cask "ghostty"
 cask "font-meslo-lg-nerd-font"
+cask "notunes"
 mas 'Xcode', id: 497799835
 mas '1Password', id: 1333542190
 mas 'Slack', id: 803453959
