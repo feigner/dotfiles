@@ -51,6 +51,7 @@ function zle-keymap-select() {
             echo -ne '\e[1 q'  # Block
             # echo -ne "$purp_cursor" # Change cursor to purple for extra visibility
             RPROMPT="%{$fg[green]%}[NORMAL]%{$reset_color%}"
+            # RPROMPT="%K{green}%F{black} NORMAL %k%f"  # Green background, black text
             ;;
         viins|main)
             echo -ne '\e[5 q'  # Beam
