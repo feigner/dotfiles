@@ -34,6 +34,11 @@ setopt auto_menu         # show completion menu on successive tab presses
 setopt complete_in_word  # allow completion within a word, not just at the end
 setopt always_to_end     # move cursor to the end after completing a word
 
+# pre-compinit requirements
+fpath[1,0]="/opt/homebrew/share/zsh/site-functions";      # homebrew
+source ${HOME}/.orbstack/shell/init.zsh 2>/dev/null || :  # orbstack
+
+# compinit
 autoload -Uz compinit; compinit    # init completion sys
 
 # basic completer
