@@ -84,17 +84,13 @@ zsh_add_config "config/prompt.sh"
 
 #
 # bindings
+# NOTE: vim-mode-specific bindings in vim-mode.sh
 #
-
-# normal mode / vim modehistory substring search via arrow & jk
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
 
 # ctrl-a + ctrl-e jumpin' aka old habits die hard
 bindkey "^A" vi-beginning-of-line
 bindkey "^E" vi-end-of-line
+
 
 #
 # extras
