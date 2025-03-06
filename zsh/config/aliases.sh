@@ -12,10 +12,10 @@ alias grep="grep --color=auto"
 
 # git
 alias gst='git status'
-alias gpr='git pull --rebase -v'
+alias gpr='git pull --rebase'
 alias gprs='git pull --rebase --autostash'
-alias glog="git log --all --graph --decorate --oneline --simplify-by-decoration"
-alias glogg="git --no-pager log --graph --full-history --all --color --pretty=format:'%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s'"
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold magenta)<%an>%Creset'"
+alias glogg="git --no-pager log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 
 # vim
 alias vim="nvim"
