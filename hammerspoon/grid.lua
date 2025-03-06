@@ -8,7 +8,6 @@
 --]]
 
 -- mash chords
--- mash = {"⌘", "⌃"} -- from init.lua
 mash = {"⌘", "⌃"}
 sizeUpMash = {"⌘", "⌥"}
 sizeDownMash = {"⌃", "⌥"}
