@@ -8,36 +8,36 @@ purp=$FG[097]
 white=$FG[253]
 dark_grey=$FG[238]
 light_grey=$FG[241]
+light_grey_bg=$BG[241]
+dark_grey_bg=$BG[238]
 bold="%B"
-reset="%{%f%}"
+reset="%f%b"
+reset_bg="%k"
 
 # maybe I'm doing something wrong, but startup times using zsh's `vcs_info`
 # to get branch / dirty status is higher than just doing it the ol' fashioned way :thunk:
 git_info() {
-  local branch dirty
   if git rev-parse --is-inside-work-tree &>/dev/null; then
+    local branch dirty
     branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
-    dirty=$(git status --porcelain --untracked-files=no 2>/dev/null)
     if [[ -n $branch ]]; then
-      # Parentheses are bold grey, branch name is yellow, and dirty state is red if set
-      echo -n "${bold}${light_grey}(${fg[yellow]}${branch}${dirty:+${fg[red]}✱}${light_grey})${reset}"
-
+      dirty=$(git status --porcelain --untracked-files=no 2>/dev/null)
+      echo -n "${bold}${dark_grey}${dark_grey_bg}${fg[yellow]}${branch}${dirty:+${fg[red]}✱}${reset_bg}${dark_grey}${reset}"
     fi
   fi
 }
 
-#precmd for dynamic git_info
+# precmd for dynamic git_info
 precmd() {
 PROMPT="
-${bold}${purp}[\
-${fg[blue]}%n\
+${bold}${fg[blue]}%n\
 ${purp}@\
 ${fg[green]}%m\
 ${fg[white]}:\
-${bold}${fg[white]}%45<...<%~%<<${reset}\
-${bold}${purp}]${reset} \
+${bold}${fg[white]}%45<...<%~%<<${reset} \
 $(git_info)
-${bold}${purp}󰅂 ${reset}"
+${bold}${purp}❯ ${reset}"
 }
 
-RPROMPT="${dark_grey}%D{%H:%M:%S}${reset}"
+# see `vim-mode` for rprompt tweakin'
+RPROMPT=""
