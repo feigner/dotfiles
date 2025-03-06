@@ -107,5 +107,8 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=black,bold'
 # Disable highlight of pastes text
 zle_highlight=('paste:none')
 
+# mise
+command -v mise &>/dev/null && eval "$(mise activate zsh)"
+
 # <3
 eval "$(fzf --zsh)"
