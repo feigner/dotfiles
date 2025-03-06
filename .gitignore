@@ -4,6 +4,7 @@ vim/.undo
 vim/.viminfo
 vim/plugins/**
 tmux/plugins/**
+tmux/resurrect/**
 karabiner/automatic_backups
 iterm2/AppSupport
 iterm2/sockets
