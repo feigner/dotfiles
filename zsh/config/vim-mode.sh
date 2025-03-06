@@ -8,8 +8,8 @@ bindkey '^[[B' history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
-# normal mode delete key fix
-bindkey -M vicmd "^[[3~" delete-char
+# normal mode delete key / uppercase transform fix
+bindkey -M vicmd '^[[3~' vi-delete-char
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect '^h' vi-backward-char
@@ -56,7 +56,7 @@ function zle-keymap-select() {
         viins|main)
             echo -ne '\e[5 q'  # Beam
             # echo -ne "$white_cursor" # Reset cursor color
-            RPROMPT="" # no cursor on insert mored
+            RPROMPT="" # no cursor on insert mode
             ;;
     esac
     zle reset-prompt
