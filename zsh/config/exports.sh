@@ -3,10 +3,8 @@
 ################################################################################
 
 # The big one -- first elements added first, but resolved last
-export PATH=/opt/homebrew/opt/postgresql@15/bin:$PATH
+export PATH=$HOME/Library/Android/sdk/tools:$HOME/Library/Android/sdk/build-tools:$HOME/Android/sdk/platform-tools:$PATH
 export PATH=/opt/homebrew/opt/yarn:$PATH
-export PATH=/opt/homebrew/opt/python@3.9:$PATH
-export PATH=/opt/homebrew/opt/openssl@3:$PATH
 export PATH=/usr/local/bin:$PATH     # Recommended by brew doctor
 export PATH=/opt/homebrew/sbin:$PATH # Recommended by brew doctor
 export PATH=/opt/homebrew/bin:$PATH  # Brew is first as everything else uses that
@@ -45,3 +43,7 @@ export PROJECTS_DIR="${HOME}/projects"
 
 # rg
 RIPGREP_CONFIG_PATH="${HOME}/.config/.ripgreprc"
+
+# android studio :/
+export ANDROID_HOME="$HOME/Android/Sdk"
+export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
