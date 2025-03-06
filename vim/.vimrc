@@ -154,7 +154,8 @@ let g:lightline = {
     \   'left': [['mode', 'paste'], ['filename'], ['gitbranch', 'modified']],
     \   'right': [['lineinfo'], ['percent']]},
     \ 'component_function': {
-    \   'gitbranch': 'FugitiveHead'},
+    \   'gitbranch': 'FugitiveHead',
+    \   'filename': 'LightlineFilename',},
     \ 'tabline': {
     \   'left': [['buffers']]},
     \ 'component_expand': {
@@ -165,6 +166,17 @@ let g:lightline = {
     \ 'subseparator': { 'left': '', 'right': '' },
     \ 'tabline_separator': { 'left': '', 'right': ''},
     \ 'tabline_subseparator': { 'left': '', 'right': ''}}
+
+" Display the current file path relative to the git root directory,
+" Otherwise show relative path from cwd
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
 
 " gitgutter
 set updatetime=500
