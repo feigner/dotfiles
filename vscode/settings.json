@@ -6,7 +6,7 @@
   "workbench.colorTheme": "Base16 Dark Monokai",
   "workbench.editor.enablePreview": false,
   "workbench.colorCustomizations": {
-     "statusBar.background": "#875fd7",
+    "statusBar.background": "#875fd7"
   },
   "window.zoomLevel": -1,
   "git.ignoreMissingGitWarning": true,
@@ -20,9 +20,6 @@
     "editor.defaultFormatter": "vscode.html-language-features"
   },
   "vim.easymotion": true,
-  // TEMP: vim-sneak simulation has NO LABEL MODE support, switch to easymotion
-  // `s`, `S` are emulated by easymotion, but still enable sneak to make `<operator>z<char><char>` work.
-  "vim.sneak": true,
   "vim.normalModeKeyBindingsNonRecursive": [
     // double leader for opening file "search"
     {
@@ -36,24 +33,9 @@
       "when": "editorTextFocus && !editorReadonly"
     },
     //
-    // easymotion
+    // vim sneak emulation via easymotion
     //
-    // word forward
-    {
-      "before": ["<leader>", "w"],
-      "after": ["<leader>", "<leader>", "w"]
-    },
-    // word backward
-    {
-      "before": ["<leader>", "b"],
-      "after": ["<leader>", "<leader>", "b"]
-    },
-    // 2 char search global search
-    {
-      "before": ["<leader>", "s"],
-      "after": ["<leader>", "<leader>", "2", "s"]
-    },
-    // emulate sneak (no label mode in sneak yet)
+    // sneak has no label mode, but easymotion does
     // forward
     {
       "before": ["s"],
@@ -63,6 +45,21 @@
     {
       "before": ["S"],
       "after": ["<leader>", "<leader>", "2", "F"]
+    },
+    //
+    // splits
+    //
+ {
+        "before": ["<leader>", "|"],
+        "commands": [
+            "workbench.action.splitEditorRight"
+        ]
+    },
+    {
+        "before": ["<leader>", "-"],
+        "commands": [
+            "workbench.action.splitEditorDown"
+        ]
     }
   ],
   "vim.visualModeKeyBindings": [
