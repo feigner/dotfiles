@@ -231,6 +231,11 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 
+" ez splits
+nnoremap <leader>- :split<CR>
+nnoremap <leader>\| :vsplit<CR>
+
+
 " reload vim
 map <silent> <leader>V :source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
