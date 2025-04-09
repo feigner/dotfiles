@@ -15,15 +15,16 @@ setopt autocd extendedglob nomatch interactive_comments globdots
 
 HISTSIZE=10000000000  # gimme more
 SAVEHIST=$HISTSIZE
-INC_APPEND_HISTORY="true"
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 
-setopt extendedhistory
-setopt appendhistory
-setopt histignoredups
-unsetopt histignorespace
-setopt sharehistory
-setopt incappendhistory
+
+setopt extendedhistory       # tack metadata onto histfile entries
+setopt appendhistory         # append when the shell exits
+setopt incappendhistory      # write to history incrementally
+setopt sharehistory          # share across sessions
+setopt histignorealldups     # only keep the latest duplicate
+setopt histreduceblanks      # trim excess blanks
+unsetopt histignorespace     # keep space-prefixed cmds
 
 #
 # cmd completions
