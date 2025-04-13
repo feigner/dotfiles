@@ -28,13 +28,15 @@ git_info() {
 }
 
 # precmd for dynamic git_info
+# NOTE: esc with %{} to avoid zsh prompt width calcs from
+# going berzerk and eating into scrollback buffer
 precmd() {
 PROMPT="
-${bold}${fg[blue]}%n\
+${bold}%{$fg[blue]%}%n\
 ${purp}@\
-${fg[green]}%m\
-${fg[white]}:\
-${bold}${fg[white]}%45<...<%~%<<${reset} \
+%{$fg[green]%}%m\
+%{$fg[white]%}:\
+${bold}%{$fg[white]%}%45<...<%~%<<${reset} \
 $(git_info)
 ${bold}${purp}❯ ${reset}"
 }
