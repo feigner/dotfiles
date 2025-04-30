@@ -24,12 +24,12 @@ tms() {
 
 # gcb [pattern] - "git checkout branch"
 # - Shows a list of branches if no arguments are provided.
-# - Filters branches using the provided pattern.
+# - Filters branches using the provided pattern (substring, not fuzzy via --exact)
 # - Automatically checks out if there's an exact match.
 gcb() {
     local branch
     branch=$(git branch --sort=-committerdate --format='%(refname:short)' \
-        | fzf --query="$1" --select-1 --exit-0)
+        | fzf  --exact --query="$1" --select-1 --exit-0)
 
     if [[ -n "$branch" ]]; then
         git checkout "$branch"
@@ -57,7 +57,7 @@ fo() {
 
 # cdp [pattern] - "cd projects" -- Change to projects dir
 # If no argument is provided, change to $PROJECT_DIR
-# If a pattern is provided, filter directories in $PROJECTS_DIR using fzf.
+# If a pattern is provided, filter directories in $PROJECTS_DIR using fzf (--exact for substr, not fuzzy).
 # Automatic selection if there's only one match.
 cdp() {
     local projects_dir="${PROJECTS_DIR}"
@@ -66,7 +66,7 @@ cdp() {
     else
         local selected
         selected=$(find "$projects_dir" -maxdepth 1 -type d -iname "*$1*" -exec basename {} \; \
-            | fzf --select-1 --exit-0 --preview "tree -C '$projects_dir/{}' | head -100")
+            | fzf --exact --select-1 --exit-0 --preview "tree -C '$projects_dir/{}' | head -100")
         if [[ -n "$selected" ]]; then
             cd "$projects_dir/$selected" || return
         else
