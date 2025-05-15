@@ -11,6 +11,7 @@ alias ll="ls -larth"
 alias grep="grep --color=auto"
 
 # git
+alias gcm='git commit -m'
 alias gco='git checkout'
 alias gpo='git push origin'
 alias gst='git status'
