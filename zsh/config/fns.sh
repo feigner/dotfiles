@@ -21,9 +21,22 @@ tms() {
         tmux switch-client -t "$session"
 }
 
+# gpob [-f|--force] - "git push origin <current-branch> [--force]"
+# - Pushes the current branch to origin
+# - Pass -f or --force to force push
+gpob() {
+  local branch
+  branch=$(git symbolic-ref --short HEAD)
+  if [[ "$1" == "-f" || "$1" == "--force" ]]; then
+    git push --force origin "$branch"
+  else
+    git push origin "$branch"
+  fi
+}
+
 
 # gcb [pattern] - "git checkout branch"
-# - Shows a list of branches if no arguments are provided.
+# - Shows a list of local branches if no arguments are provided.
 # - Filters branches using the provided pattern (substring, not fuzzy via --exact)
 # - Automatically checks out if there's an exact match.
 gcb() {
@@ -33,6 +46,23 @@ gcb() {
 
     if [[ -n "$branch" ]]; then
         git checkout "$branch"
+    fi
+}
+
+# gcbr [pattern] - "git checkout branch (remote)"
+# - Lists remote branches
+# - Filters using provided pattern (substring, not fuzzy via --exact)
+# - Creates local tracking branch if selected
+gcbr() {
+    git fetch
+    local branch
+    branch=$(git branch -r --sort=-committerdate --format='%(refname:short)' \
+        | grep -v '^origin/HEAD$' \
+        | fzf --exact --query="$1" --select-1 --exit-0)
+
+    if [[ -n "$branch" ]]; then
+        local local_branch=${branch#origin/}
+        git checkout -b "$local_branch" --track "$branch"
     fi
 }
 
