@@ -42,7 +42,12 @@ export LESS=" -R "
 export PROJECTS_DIR="${HOME}/projects"
 
 # rg
-RIPGREP_CONFIG_PATH="${HOME}/.config/.ripgreprc"
+export RIPGREP_CONFIG_PATH="${HOME}/.config/.ripgreprc"
+
+# homebrew
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_ENV_HINTS=1
 
 # android studio :/
 export ANDROID_HOME="$HOME/Android/Sdk"
