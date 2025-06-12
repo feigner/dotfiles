@@ -52,6 +52,7 @@ set ignorecase                   " case insensitive search
 set smartcase                    " override case insensitivity if uppercase letters exist
 set hlsearch                     " highlight search results
 set incsearch                    " incremental search
+set inccommand=split             " show substitutions in a preview split
 set showmatch                    " highlight matching paren, bracket, brace, etc
 
 " Splits
