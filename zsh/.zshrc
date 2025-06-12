@@ -10,6 +10,12 @@
 setopt autocd extendedglob nomatch interactive_comments globdots
 
 #
+# init plugin / package manager + exports
+#
+source "$ZDOTDIR/pkg.sh"
+zsh_add_config "config/exports.sh"
+
+#
 # history
 #
 
@@ -36,22 +42,22 @@ setopt complete_in_word  # allow completion within a word, not just at the end
 setopt always_to_end     # move cursor to the end after completing a word
 
 # pre-compinit requirements
-fpath[1,0]="/opt/homebrew/share/zsh/site-functions";      # homebrew
-source ${HOME}/.orbstack/shell/init.zsh 2>/dev/null || :  # orbstack
+fpath=(/opt/homebrew/share/zsh/site-functions $fpath)       # homebrew completions
+source "${HOME}/.orbstack/shell/init.zsh" 2>/dev/null || :  # orbstack completions
 
-# compinit
-autoload -Uz compinit; compinit    # init completion sys
+# compinit init
+autoload -Uz compinit; compinit
 
 # basic completer
 zstyle ':completion:*' completer _complete
-# case-insensitive and partial matching
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+# case-insensitive matchin'
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 # ensure tab completion shows both directories and files
 zstyle ':completion:*' file-patterns '*:all-files *(-/):directories'
 # enable menu selection for completion menu
 zstyle ':completion:*:*:*:*:*' menu select
-# colored menu
-[[ -z "$LS_COLORS" ]] || zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# colored file / dir autocomplete
+zstyle -e ':completion:*' list-colors 'reply=("${(s.:.)LS_COLORS}")'
 
 _comp_options+=(globdots) # include hidden files in completion results
 
@@ -62,19 +68,17 @@ autoload -U +X bashcompinit && bashcompinit     # enable bash-style completions
 # plugins
 #
 
-source "$ZDOTDIR/pkg.sh"
-
 zsh_add_plugin "zsh-users/zsh-history-substring-search"
 zsh_add_plugin "hlissner/zsh-autopair"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 
-ZSH_AUTOSUGGEST_STRATEGY=('completion')
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=black,bold'
 
 #
 # packages
 #
 
-zsh_add_config "config/exports.sh"
 zsh_add_config "config/aliases.sh"
 zsh_add_config "config/vim-mode.sh"
 zsh_add_config "config/fns.sh"
@@ -97,15 +101,11 @@ zsh_add_config "config/prompt.sh"
 bindkey "^A" vi-beginning-of-line
 bindkey "^E" vi-end-of-line
 
-
 #
 # extras
 #
 
-# don't use magenta for highlightin'
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=green,fg=black,bold'
-
-# Disable highlight of pastes text
+# Disable highlight of pasted text
 zle_highlight=('paste:none')
 
 # mise
