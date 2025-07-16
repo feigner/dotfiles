@@ -3,7 +3,7 @@
 ################################################################################
 
 # The big one -- first elements added first, but resolved last
-export PATH=$HOME/Library/Android/sdk/tools:$HOME/Library/Android/sdk/build-tools:$HOME/Android/sdk/platform-tools:$PATH
+export PATH=$HOME/Library/Android/sdk/tools:$HOME/Library/Android/sdk/build-tools:$HOME/Library/Android/sdk/platform-tools:$PATH
 export PATH=/opt/homebrew/opt/yarn:$PATH
 export PATH=/usr/local/bin:$PATH     # Recommended by brew doctor
 export PATH=/opt/homebrew/sbin:$PATH # Recommended by brew doctor
