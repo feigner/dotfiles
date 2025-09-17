@@ -14,7 +14,7 @@ sizeDownMash = {"⌃", "⌥"}
 throwMash = {"⌘", "⌃", "shift"}
 
 -- defaults
-hs.grid.setGrid('6x6')
+hs.grid.setGrid('15x6')
 hs.grid.setMargins("15,15")
 hs.window.animationDuration = 0.0
 
