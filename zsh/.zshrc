@@ -113,3 +113,4 @@ command -v mise &>/dev/null && eval "$(mise activate zsh)"
 
 # <3
 eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"

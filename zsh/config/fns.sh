@@ -35,19 +35,26 @@ gpob() {
 }
 
 
-# gcb [pattern] - "git checkout branch"
+# gcb [-b new-branch] [pattern] - "git checkout branch"
 # - Shows a list of local branches if no arguments are provided.
 # - Filters branches using the provided pattern (substring, not fuzzy via --exact)
 # - Automatically checks out if there's an exact match.
+# - If '-b new-branch' is passed, creates and checks out a new branch.
 gcb() {
+    if [[ "$1" == "-b" && -n "$2" ]]; then
+        git checkout -b "$2"
+        return
+    fi
+
     local branch
     branch=$(git branch --sort=-committerdate --format='%(refname:short)' \
-        | fzf  --exact --query="$1" --select-1 --exit-0)
+        | fzf --exact --query="$1" --select-1 --exit-0)
 
     if [[ -n "$branch" ]]; then
         git checkout "$branch"
     fi
 }
+
 
 # gcbr [pattern] - "git checkout branch (remote)"
 # - Lists remote branches

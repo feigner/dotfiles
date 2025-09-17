@@ -43,6 +43,10 @@ alias brew:bundle="brew bundle --file ~/.Brewfile"
 alias dc="docker-compose"
 alias dcr="docker-compose run --rm"
 
+# jq: parse input json, emit doc structure
+# eg: `curl -s 'https://ip-ranges.amazonaws.com/ip-ranges.json' | jq-struct`
+alias jq-struct='jq -r '"'"'[path(..)|map(if type=="number" then "[]" else tostring end)|join(".")|split(".[]")|join("[]")]|unique|map("."+.)|.[]'"'"''
+
 # misc
 alias editdots="cd ~/dotfiles; nvim"
 alias weather="curl wttr.in"
