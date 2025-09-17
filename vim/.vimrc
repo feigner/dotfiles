@@ -215,12 +215,14 @@ nnoremap <silent> <leader>f :Ag <CR>
 nnoremap <silent> <leader>b :Buffers <CR>
 nnoremap <silent> <leader>s :BLines <CR>
 nnoremap <silent> <leader>w :Windows <CR>
+nnoremap <silent> <C-f> :Files<CR>
 
 " buffers
 nmap <leader>T :enew<CR>
 nmap <leader>] :bnext<CR>
 nmap <leader>[ :bprevious<CR>
-nmap <leader>bl :ls<CR>
+nnoremap <leader>w :bp\|bd #<CR>  " kill current, move to prev
+nnoremap <leader>W :%bd\|e#<CR>   " kill others, keep current
 
 " commenting
 nmap <leader>c<space> :TComment<CR>
@@ -235,7 +237,6 @@ nnoremap <C-L> <C-W><C-L>
 " ez splits
 nnoremap <leader>- :split<CR>
 nnoremap <leader>\| :vsplit<CR>
-
 
 " reload vim
 map <silent> <leader>V :source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
