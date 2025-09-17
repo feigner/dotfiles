@@ -77,6 +77,20 @@ hs.hotkey.bind(throwMash, "up", function()
     win:centerOnScreen()
 end)
 
+-- screen-sharing
+-- center in 16:10 ratio via fixed width + height
+hs.hotkey.bind(throwMash, "s", function()
+    local win = hs.window.focusedWindow()
+    local screenFrame = win:screen():frame()
+    local y_offset = 12
+
+    local w, h = 1920, 1080
+    local x = screenFrame.x + (screenFrame.w - w) / 2
+    local y = (screenFrame.y + (screenFrame.h - h) / 2) - y_offset
+
+    win:setFrame(hs.geometry.rect(x, y, w, h))
+end)
+
 --
 -- window movin'
 -- arrows + mash: move window w/ wrap

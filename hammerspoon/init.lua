@@ -1,4 +1,5 @@
 require "grid"
+require "obsidian"
 
 -- auto config reloading
 reloader = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", function(files)
