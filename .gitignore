@@ -8,7 +8,7 @@ tmux/resurrect/**
 karabiner/automatic_backups
 iterm2/AppSupport
 iterm2/sockets
-
+ghostty/shaders
 zsh/plugins/**
 zsh/.zsh_history
 zsh/.zsh_sessions

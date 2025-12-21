@@ -1,6 +1,6 @@
 # window UI
 background-opacity = 0.90
-background-blur-radius = 20
+background-blur = true
 macos-titlebar-style = hidden
 mouse-hide-while-typing = true
 window-padding-x = 12
@@ -15,9 +15,13 @@ adjust-cell-height = "-1"
 # quake term
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
 quick-terminal-animation-duration=.1
+quick-terminal-size=50%
 
 # cmd-click to open links pls
 link-url = true
 
 # work around for no-colors on mac -> linux :/
 term = xterm-256color
+
+# cursor_warp tweak
+custom-shader = ./shaders/cursor_eff.glsl
