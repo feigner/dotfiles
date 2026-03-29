@@ -2,7 +2,7 @@
 vec4 TRAIL_COLOR = iCurrentCursorColor; // can change to eg: vec4(0.2, 0.6, 1.0, 0.5);
 const float DURATION = 0.20; // total animation time (increased for smoother movement)
 const float TRAIL_SIZE = 0.35; // 0.0 = all corners move together. 1.0 = max smear (reduced for subtlety)
-const float THRESHOLD_MIN_DISTANCE = 1.5; // min distance to show trail (units of cursor height)
+const float THRESHOLD_MIN_DISTANCE = 10.5; // min distance to show trail (units of cursor height)
 const float BLUR = 1.5; // blur size in pixels (for antialiasing, increased for softer edges)
 const float TRAIL_THICKNESS = 0.85;  // 1.0 = full cursor height, 0.0 = zero height, >1.0 = funky aah
 const float TRAIL_THICKNESS_X = 0.85;
