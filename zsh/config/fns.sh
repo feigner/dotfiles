@@ -73,6 +73,32 @@ gcbr() {
     fi
 }
 
+# gd [git diff args...] [--side] - Browse changed files and preview diffs in fzf.
+# Supports anything `git diff` accepts. Pass `--side` to enable delta side-by-side previews.
+gd() {
+    local -a git_args
+    local arg
+    local delta_features="${DELTA_FEATURES:-}"
+
+    for arg in "$@"; do
+        if [[ "$arg" == "--side" ]]; then
+            delta_features="${delta_features:+${delta_features} }side-by-side"
+        else
+            git_args+=("$arg")
+        fi
+    done
+
+    local git_args_quoted="${(j: :)${(q)git_args}}"
+
+    git diff --color=always --name-only "${git_args[@]}" |
+        DELTA_FEATURES="$delta_features" fzf \
+            --ansi \
+            --height=100% \
+            --margin=0 \
+            --preview "git diff --color=always ${git_args_quoted} {-1} | delta --width=\${FZF_PREVIEW_COLUMNS}" \
+            --preview-window="right,75%" || true
+}
+
 
 # fe [pattern] - "file edit" -- Open the selected file with the default editor.
 # Supports fuzzy search with fzf and automatically opens if there's only one match.

@@ -31,6 +31,12 @@
     changed = green
     untracked = cyan
 
+[diff]
+    tool = nvimdiff
+
+[difftool]
+    prompt = false
+
 [alias]
     # general
     st = status -s
@@ -52,7 +58,17 @@
 
 [core]
     editor = nvim
-    pager = diff-so-fancy | less --tabs=4 -RFX
+    pager = delta
+
+[delta]
+    navigate = true
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictStyle = zdiff3
 
 [init]
-	defaultBranch = main
+    defaultBranch = main
+

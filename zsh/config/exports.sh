@@ -29,10 +29,14 @@ export FZF_DEFAULT_OPTS='
   --color=fg:#f5f4f1,fg+:#f9f8f5,bg:#303030,bg+:#383838
   --color=hl:#C792EA,hl+:#C792EA,info:#6a6a6a,marker:#C3E88D
   --color=prompt:#C792EA,spinner:#C792EA,pointer:#F78C6C,header:#87afaf
-  --color=border:#444444,separator:#4a4a4a,label:#aeaeae,query:#f9f8f5'
+  --color=border:#444444,separator:#4a4a4a,label:#aeaeae,query:#f9f8f5
+  --ansi'
 
 # bat theme (ie: fzf vim preview)
 export BAT_THEME='base16'
+
+# delta / git diffs
+export DELTA_FEATURES="diff-so-fancy"
 
 # `less` colors
 export LESSOPEN="| src-hilite-lesspipe.sh %s"
