@@ -34,6 +34,33 @@ gpob() {
   fi
 }
 
+# gcf [-a|--autosquash] [commit-ish] - "git commit --fixup" with optional autosquash rebase.
+# - If no commit is provided, select one from recent history with fzf.
+# - Pass -a or --autosquash to immediately run `git rebase -i --autosquash`.
+gcf() {
+  local autosquash=
+  local target
+  local line
+
+  [[ "$1" == "-a" || "$1" == "--autosquash" ]] && autosquash=1 && shift
+
+  if [[ -n "$1" ]]; then
+    target="$1"
+  else
+    command -v fzf >/dev/null 2>&1 || {
+      echo "usage: gcf [-a|--autosquash] <commit-ish>"
+      return 1
+    }
+    line="$(git log --oneline -n 100 | fzf --no-sort --reverse --prompt='fixup target> ')" || return 1
+    target="${line%% *}"
+  fi
+
+  git commit --fixup "$target" || return 1
+
+  [[ -n "$autosquash" ]] || return 0
+  GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash "$(git rev-parse "${target}^" 2>/dev/null || echo --root)"
+}
+
 
 # gcb [-b new-branch] [pattern] - "git checkout branch"
 # - Shows a list of local branches if no arguments are provided.
@@ -73,30 +100,90 @@ gcbr() {
     fi
 }
 
-# gd [git diff args...] [--side] - Browse changed files and preview diffs in fzf.
-# Supports anything `git diff` accepts. Pass `--side` to enable delta side-by-side previews.
+# gd [git diff args...] [--side] [--vert] [--difft|--delta]
+# Browse changed files in fzf and preview the selected diff.
+# Examples:
+# - gd                         # unstaged changes, delta preview
+# - gd --cached                # staged changes
+# - gd main...HEAD             # branch/range diff
+# - gd path/to/file            # one tracked file
+# - gd --side --difft          # difftastic side-by-side preview
+# - gd --vert                  # preview stacked above the file list (narrow terminals)
 gd() {
     local -a git_args
     local arg
+    local renderer="delta"
     local delta_features="${DELTA_FEATURES:-}"
+    local difft_display="inline"
+    local difft_cmd
+    local preview_position="right"
+    local preview_size="70%"
 
     for arg in "$@"; do
-        if [[ "$arg" == "--side" ]]; then
-            delta_features="${delta_features:+${delta_features} }side-by-side"
-        else
-            git_args+=("$arg")
-        fi
+        case "$arg" in
+            --side)
+                delta_features="${delta_features:+${delta_features} }side-by-side"
+                difft_display="side-by-side-show-both"
+                ;;
+            --vert)
+                preview_position="up"
+                preview_size="90%"
+                ;;
+            --difft|--difftastic)
+                renderer="difft"
+                ;;
+            --delta)
+                renderer="delta"
+                ;;
+            *)
+                git_args+=("$arg")
+                ;;
+        esac
     done
 
-    local git_args_quoted="${(j: :)${(q)git_args}}"
+    local git_args_quoted=""
+    local preview_git_args=""
+    local preview_cmd=""
+    local -a list_git_args=("${git_args[@]}")
 
-    git diff --color=always --name-only "${git_args[@]}" |
+    # A lone tracked file is a pathspec. Use it to restrict the file list,
+    # but keep it out of the preview prefix; preview adds `-- {-1}` itself.
+    if (( ${#git_args[@]} == 1 )) && git ls-files --error-unmatch -- "${git_args[1]}" >/dev/null 2>&1; then
+        list_git_args=(-- "${git_args[1]}")
+        git_args=()
+    fi
+
+    if (( ${#git_args[@]} )); then
+        git_args_quoted="${(j: :)${(q)git_args}}"
+        preview_git_args="${git_args_quoted} "
+    fi
+
+    if [[ "$renderer" == "difft" ]]; then
+        if command -v difft >/dev/null 2>&1; then
+            difft_cmd="difft"
+        elif command -v difftastic >/dev/null 2>&1; then
+            difft_cmd="difftastic"
+        else
+            echo "gd: difftastic not found (expected \`difft\` or \`difftastic\` on PATH)"
+            return 1
+        fi
+        preview_cmd="DFT_COLOR=always DFT_DISPLAY=${difft_display} DFT_WIDTH=\${FZF_PREVIEW_COLUMNS} git -c diff.external=${(q)difft_cmd} diff ${preview_git_args}-- ':(top)'{-1}"
+    else
+        preview_cmd="git diff --color=always ${preview_git_args}-- ':(top)'{-1} | delta --width=\${FZF_PREVIEW_COLUMNS}"
+    fi
+
+    git diff --color=always --name-only "${list_git_args[@]}" |
         DELTA_FEATURES="$delta_features" fzf \
             --ansi \
             --height=100% \
             --margin=0 \
-            --preview "git diff --color=always ${git_args_quoted} {-1} | delta --width=\${FZF_PREVIEW_COLUMNS}" \
-            --preview-window="right,75%" || true
+            --preview "$preview_cmd" \
+            --preview-window="${preview_position},${preview_size},wrap-word" || true
+}
+
+# gdd [git diff args...] [--side] - gd with difftastic previews.
+gdd() {
+    gd --difft "$@"
 }
 
 
