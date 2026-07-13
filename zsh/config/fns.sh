@@ -100,22 +100,19 @@ gcbr() {
     fi
 }
 
-# gd [git diff args...] [--side] [--vert] [--difft|--delta]
-# Browse changed files in fzf and preview the selected diff.
+# gd [git diff args...] [--side] [--vert]
+# Browse changed files in fzf and preview the selected diff (delta).
 # Examples:
-# - gd                         # unstaged changes, delta preview
+# - gd                         # unstaged changes
 # - gd --cached                # staged changes
 # - gd main...HEAD             # branch/range diff
 # - gd path/to/file            # one tracked file
-# - gd --side --difft          # difftastic side-by-side preview
+# - gd --side                  # side-by-side preview
 # - gd --vert                  # preview stacked above the file list (narrow terminals)
 gd() {
     local -a git_args
     local arg
-    local renderer="delta"
     local delta_features="${DELTA_FEATURES:-}"
-    local difft_display="inline"
-    local difft_cmd
     local preview_position="right"
     local preview_size="70%"
 
@@ -123,17 +120,10 @@ gd() {
         case "$arg" in
             --side)
                 delta_features="${delta_features:+${delta_features} }side-by-side"
-                difft_display="side-by-side-show-both"
                 ;;
             --vert)
                 preview_position="up"
                 preview_size="90%"
-                ;;
-            --difft|--difftastic)
-                renderer="difft"
-                ;;
-            --delta)
-                renderer="delta"
                 ;;
             *)
                 git_args+=("$arg")
@@ -141,9 +131,7 @@ gd() {
         esac
     done
 
-    local git_args_quoted=""
     local preview_git_args=""
-    local preview_cmd=""
     local -a list_git_args=("${git_args[@]}")
 
     # A lone tracked file is a pathspec. Use it to restrict the file list,
@@ -154,22 +142,7 @@ gd() {
     fi
 
     if (( ${#git_args[@]} )); then
-        git_args_quoted="${(j: :)${(q)git_args}}"
-        preview_git_args="${git_args_quoted} "
-    fi
-
-    if [[ "$renderer" == "difft" ]]; then
-        if command -v difft >/dev/null 2>&1; then
-            difft_cmd="difft"
-        elif command -v difftastic >/dev/null 2>&1; then
-            difft_cmd="difftastic"
-        else
-            echo "gd: difftastic not found (expected \`difft\` or \`difftastic\` on PATH)"
-            return 1
-        fi
-        preview_cmd="DFT_COLOR=always DFT_DISPLAY=${difft_display} DFT_WIDTH=\${FZF_PREVIEW_COLUMNS} git -c diff.external=${(q)difft_cmd} diff ${preview_git_args}-- ':(top)'{-1}"
-    else
-        preview_cmd="git diff --color=always ${preview_git_args}-- ':(top)'{-1} | delta --width=\${FZF_PREVIEW_COLUMNS}"
+        preview_git_args="${(j: :)${(q)git_args}} "
     fi
 
     git diff --color=always --name-only "${list_git_args[@]}" |
@@ -177,13 +150,8 @@ gd() {
             --ansi \
             --height=100% \
             --margin=0 \
-            --preview "$preview_cmd" \
+            --preview "git diff --color=always ${preview_git_args}-- ':(top)'{-1} | delta --width=\${FZF_PREVIEW_COLUMNS}" \
             --preview-window="${preview_position},${preview_size},wrap-word" || true
-}
-
-# gdd [git diff args...] [--side] - gd with difftastic previews.
-gdd() {
-    gd --difft "$@"
 }
 
 
