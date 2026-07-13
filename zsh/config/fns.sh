@@ -145,7 +145,14 @@ gd() {
         preview_git_args="${(j: :)${(q)git_args}} "
     fi
 
-    git diff --color=always --name-only "${list_git_args[@]}" |
+    local files
+    files=$(git diff --color=always --name-only "${list_git_args[@]}")
+    if [[ -z "$files" ]]; then
+        echo "gd: no changes to show" >&2
+        return 1
+    fi
+
+    print -r -- "$files" |
         DELTA_FEATURES="$delta_features" fzf \
             --ansi \
             --height=100% \
