@@ -72,3 +72,22 @@
 [init]
     defaultBranch = main
 
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[push]
+    autoSetupRemote = true
+
+[pull]
+    rebase = true
+
+[rebase]
+    autostash = true
+
+[fetch]
+    prune = true
+
+[branch]
+    sort = -committerdate
+
