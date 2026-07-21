@@ -1,55 +1,67 @@
 #
-# aliases
+# ls
 #
 
-
-# ls
 alias ls="ls --color=auto"
 alias ll="ls -larth"
 
+#
 # grep
+#
+
 alias grep="grep --color=auto"
 
-# git (see also: fns.sh for additional git toolin')
+#
+# git
+#
+
+# (see also: fns.sh for additional git toolin')
 alias gcm='git commit -m'
 alias gco='git checkout'
 alias gpo='git push origin'
 alias gst='git status'
-alias gpr='git pull --rebase'
-alias gprs='git pull --rebase --autostash'
+alias gpr='git pull --rebase --autostash'
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold magenta)<%an>%Creset'"
 alias glogg="git --no-pager log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 alias gap="git add -p"
 alias gd="git diff"
 alias gdt="git difftool"
 
+#
+# tmux
+#
+
+alias tmn="tmux new -t"
+alias tma="tmux a -t"
+alias tmls="tmux list-sessions -F '#{session_name}|#{session_windows}|#{?session_attached,attached,detached}' | column -t -s '|'"
+
+#
 # vim
+#
+
 alias vim="nvim"
 alias vimdiff='nvim -d'
 
-# zsh
-alias zsh:reload="source $ZDOTDIR/.zshrc"
-alias zsh:edit="nvim $ZDOTDIR/.zshrc"
-alias zsh:alias="less ~/.config/zsh/config/aliases.sh"
-alias zsh:alias:edit="nvim ~/.config/zsh/config/aliases.sh"
 
-# tmux
-alias t="tmux"
-alias ta="t a -t"
-alias tls="t ls"
-alias tn="t new -t"
+#
+# docker compose
+#
 
-# homebrew
-alias brew:bundle="brew bundle --file ~/.Brewfile"
-
-# Docker Compose
 alias dc="docker-compose"
 alias dcr="docker-compose run --rm"
 
-# jq: parse input json, emit doc structure
+#
+# misc
+#
+
+alias zshr="source $ZDOTDIR/.zshrc"
+
+alias editdots="cd ~/dotfiles; nvim"
+
+alias brew:bundle="brew bundle --file ~/.Brewfile"
+
+# parse input json, emit doc structure
 # eg: `curl -s 'https://ip-ranges.amazonaws.com/ip-ranges.json' | jq-struct`
 alias jq-struct='jq -r '"'"'[path(..)|map(if type=="number" then "[]" else tostring end)|join(".")|split(".[]")|join("[]")]|unique|map("."+.)|.[]'"'"''
 
-# misc
-alias editdots="cd ~/dotfiles; nvim"
 alias weather="curl wttr.in"

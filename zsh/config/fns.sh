@@ -6,66 +6,93 @@
 #     ...
 # }
 
-# tms [session name] - "tmux session" -- attach / switch / create a tmux session.
-# - no args: pick a recent session
-# - with query arg, pick a match or create it (if no matches).
-tms() {
-    local change session fzf_status
-    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+#
+# fuzzy find
+#
 
-    session=$(tmux list-sessions -F "#{session_activity}	#{session_name}" 2>/dev/null \
-        | sort -rn \
-        | cut -f2- \
-        | fzf --no-sort --query="$1" --select-1 --exit-0)
-    fzf_status=$?
-    [[ "$fzf_status" -eq 130 ]] && return 130
+# ge [query] - "grep edit" -- Search file contents, open match in vim.
+ge() {
+    local selected file line
+    selected=$(fzf \
+        --disabled \
+        --query="$*" \
+        --bind 'start:reload:if [ -n {q} ]; then ag --vimgrep --smart-case -- {q} 2>/dev/null || true; fi' \
+        --bind 'change:reload:if [ -n {q} ]; then ag --vimgrep --smart-case -- {q} 2>/dev/null || true; fi' \
+        --delimiter : \
+        --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
+        --preview-window 'up,60%,border-bottom,+{2}+3/3') || return
 
-    if [[ -n "$session" ]]; then
-        tmux $change -t "$session"
-    elif [[ -n "$1" ]]; then
-        tmux new-session -d -s "$1" && tmux $change -t "$1"
-    else
-        echo "No sessions found."
-        return 1
+    [[ "$selected" =~ '^(.+):([0-9]+):[0-9]+:' ]] || return 1
+    file="${match[1]}"
+    line="${match[2]}"
+    ${EDITOR:-vim} "+$line" "$file"
+}
+
+
+# fe [pattern] - "file edit" -- Search filenames, open match in vim.
+# Supports fuzzy search with fzf and automatically opens if there's only one match.
+fe() {
+    IFS=$'\n' files=($(fzf --query="$1" --multi --select-1 --exit-0))
+    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+
+
+# fo [pattern] - "folder open" -- Search folders, `open` match.
+# Automatically opens the directory if there's only one match.
+fo() {
+    IFS=$'\n' dir=$(find . -type d -iname "*$1*" 2>/dev/null \
+        | fzf --query="$1" --select-1 --exit-0)
+    if [[ -n "$dir" ]]; then
+        open "$dir"
     fi
 }
 
-# gpob [git push args...] - "git push origin <current-branch>" -- Push current branch to origin.
-# - Pushes the current branch to origin
-# - Passes args through to git push
-gpob() {
-  local branch
-  branch=$(git symbolic-ref --short HEAD)
-  git push "$@" origin "$branch"
+#
+# nav
+#
+
+# cdp [pattern] - "cd projects" -- Jump to a ~/projects/ directory.
+# If no argument is provided, change to $PROJECT_DIR
+# If a pattern is provided, filter directories in $PROJECTS_DIR using fzf (--exact for substr, not fuzzy).
+# Automatic selection if there's only one match.
+cdp() {
+    local projects_dir="${PROJECTS_DIR}"
+    if [[ -z "$1" ]]; then
+        cd "$projects_dir" || return
+    else
+        local selected
+        selected=$(find "$projects_dir" -maxdepth 1 -type d -iname "*$1*" -exec basename {} \; \
+            | fzf --exact --select-1 --exit-0 --preview "tree -C '$projects_dir/{}' | head -100")
+        if [[ -n "$selected" ]]; then
+            cd "$projects_dir/$selected" || return
+        else
+            echo "no matches"
+        fi
+    fi
 }
 
-# gcf [--autosquash] [commit-hash] - "git commit --fixup" -- Create a fixup commit.
-# - If no commit is provided, select one from recent history with fzf.
-# - Pass -a or --autosquash to immediately run `git rebase -i --autosquash`.
-gcf() {
-  local autosquash=
-  local target
-  local line
-
-  [[ "$1" == "-a" || "$1" == "--autosquash" ]] && autosquash=1 && shift
-
-  if [[ -n "$1" ]]; then
-    target="$1"
-  else
-    command -v fzf >/dev/null 2>&1 || {
-      echo "usage: gcf [-a|--autosquash] <commit-ish>"
-      return 1
-    }
-    line="$(git log --oneline -n 100 | fzf --no-sort --reverse --prompt='fixup target> ')" || return 1
-    target="${line%% *}"
-  fi
-
-  git commit --fixup "$target" || return 1
-
-  [[ -n "$autosquash" ]] || return 0
-  GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash "$(git rev-parse "${target}^" 2>/dev/null || echo --root)"
+# cdd [path] - "cd down" -- Change to a selected subdir.
+cdd() {
+    local dir
+    dir=$(find . -type d 2>/dev/null | fzf --query="$1" --select-1 --exit-0) && cd "$dir"
 }
 
+# cdu [path] - "cd up" -- Change to a selected parent directory.
+cdu() {
+    parents=()
+    current_dir=$(dirname "$PWD")
+    while [[ $current_dir != "/" ]]; do
+      parents+=("$current_dir")
+      current_dir=$(dirname "$current_dir")
+    done
+    parents+=("/")
+    dir=$(printf "%s\n" "${parents[@]}" | fzf --query="$1" --select-1 --exit-0)
+    [[ -n "$dir" ]] && cd "$dir"
+}
+
+#
+# git
+#
 
 # gcb [-b new-branch] [pattern] - "git checkout branch" -- Check out a local branch via fzf.
 # - Shows a list of local branches if no arguments are provided.
@@ -202,82 +229,73 @@ gdd() {
             --preview-window="$preview_window" || true
 }
 
+# gcf [--autosquash] [commit-hash] - "git commit --fixup" -- Create a fixup commit.
+# - If no commit is provided, select one from recent history with fzf.
+# - Pass -a or --autosquash to immediately run `git rebase -i --autosquash`.
+gcf() {
+  local autosquash=
+  local target
+  local line
 
-# ge [query] - "grep edit" -- Fuzzy search file contents, open match in vim.
-ge() {
-    local selected file line
-    selected=$(fzf \
-        --disabled \
-        --query="$*" \
-        --bind 'start:reload:if [ -n {q} ]; then ag --vimgrep --smart-case -- {q} 2>/dev/null || true; fi' \
-        --bind 'change:reload:if [ -n {q} ]; then ag --vimgrep --smart-case -- {q} 2>/dev/null || true; fi' \
-        --delimiter : \
-        --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
-        --preview-window 'up,60%,border-bottom,+{2}+3/3') || return
+  [[ "$1" == "-a" || "$1" == "--autosquash" ]] && autosquash=1 && shift
 
-    [[ "$selected" =~ '^(.+):([0-9]+):[0-9]+:' ]] || return 1
-    file="${match[1]}"
-    line="${match[2]}"
-    ${EDITOR:-vim} "+$line" "$file"
+  if [[ -n "$1" ]]; then
+    target="$1"
+  else
+    command -v fzf >/dev/null 2>&1 || {
+      echo "usage: gcf [-a|--autosquash] <commit-ish>"
+      return 1
+    }
+    line="$(git log --oneline -n 100 | fzf --no-sort --reverse --prompt='fixup target> ')" || return 1
+    target="${line%% *}"
+  fi
+
+  git commit --fixup "$target" || return 1
+
+  [[ -n "$autosquash" ]] || return 0
+  GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash "$(git rev-parse "${target}^" 2>/dev/null || echo --root)"
 }
 
-
-# fe [pattern] - "file edit" -- Fuzzy search filenames, open match in vim.
-# Supports fuzzy search with fzf and automatically opens if there's only one match.
-fe() {
-    IFS=$'\n' files=($(fzf --query="$1" --multi --select-1 --exit-0))
-    [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+# gpob [git push args...] - "git push origin <current-branch>" -- Push current branch to origin.
+# - Pushes the current branch to origin
+# - Passes args through to git push
+gpob() {
+  local branch
+  branch=$(git symbolic-ref --short HEAD)
+  git push "$@" origin "$branch"
 }
 
+#
+# tmux
+#
 
-# fo [pattern] - "folder open" -- Fuzzy search filders, `open` it.
-# Automatically opens the directory if there's only one match.
-fo() {
-    IFS=$'\n' dir=$(find . -type d -iname "*$1*" 2>/dev/null \
-        | fzf --query="$1" --select-1 --exit-0)
-    if [[ -n "$dir" ]]; then
-        open "$dir"
-    fi
-}
+# tms [session name] - "tmux session" -- attach / switch / create a tmux session.
+# - no args: pick a recent session
+# - with query arg, pick a match or create it (if no matches).
+tms() {
+    local change session fzf_status
+    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
 
-# cdp [pattern] - "cd projects" -- Jump to a project directory.
-# If no argument is provided, change to $PROJECT_DIR
-# If a pattern is provided, filter directories in $PROJECTS_DIR using fzf (--exact for substr, not fuzzy).
-# Automatic selection if there's only one match.
-cdp() {
-    local projects_dir="${PROJECTS_DIR}"
-    if [[ -z "$1" ]]; then
-        cd "$projects_dir" || return
+    session=$(tmux list-sessions -F "#{session_activity}	#{session_name}" 2>/dev/null \
+        | sort -rn \
+        | cut -f2- \
+        | fzf --no-sort --query="$1" --select-1 --exit-0)
+    fzf_status=$?
+    [[ "$fzf_status" -eq 130 ]] && return 130
+
+    if [[ -n "$session" ]]; then
+        tmux $change -t "$session"
+    elif [[ -n "$1" ]]; then
+        tmux new-session -d -s "$1" && tmux $change -t "$1"
     else
-        local selected
-        selected=$(find "$projects_dir" -maxdepth 1 -type d -iname "*$1*" -exec basename {} \; \
-            | fzf --exact --select-1 --exit-0 --preview "tree -C '$projects_dir/{}' | head -100")
-        if [[ -n "$selected" ]]; then
-            cd "$projects_dir/$selected" || return
-        else
-            echo "no matches"
-        fi
+        echo "No sessions found."
+        return 1
     fi
 }
 
-# cdd [path] - "cd down" -- Change to a selected subdir.
-cdd() {
-    local dir
-    dir=$(find . -type d 2>/dev/null | fzf --query="$1" --select-1 --exit-0) && cd "$dir"
-}
-
-# cdu [path] - "cd up" -- Change to a selected parent directory.
-cdu() {
-    parents=()
-    current_dir=$(dirname "$PWD")
-    while [[ $current_dir != "/" ]]; do
-      parents+=("$current_dir")
-      current_dir=$(dirname "$current_dir")
-    done
-    parents+=("/")
-    dir=$(printf "%s\n" "${parents[@]}" | fzf --query="$1" --select-1 --exit-0)
-    [[ -n "$dir" ]] && cd "$dir"
-}
+#
+# misc
+#
 
 # foad [signal] - "foad" - Kill selected processes.
 # Displays processes in fzf for selection and sends the specified signal (default: SIGKILL).
@@ -315,48 +333,90 @@ halp() {
     local cyan=$'\033[36m'
     local green=$'\033[32m'
     local magenta=$'\033[35m'
+    local yellow=$'\033[33m'
+
+    _halp_box() {
+        local label="$1" inner border
+        inner=" ${label} "
+        border=$(printf -- '─%.0s' $(seq 1 "${#inner}"))
+        printf "%s┌%s┐%s\n" "$magenta" "$border" "$reset"
+        printf "%s│%s %b%s%b %s│%s\n" "$magenta" "$reset" "$bold" "$label" "$reset" "$magenta" "$reset"
+        printf "%s└%s┘%s\n" "$magenta" "$border" "$reset"
+    }
 
     {
-        printf "%bfunctions%b\n" "$bold$magenta" "$reset"
-        awk -F ' - ' -v c="$cyan" -v d="$dim" -v r="$reset" '
-            /^# [[:alnum:]_]/ && NF > 1 {
-                sig = $1
-                desc = $2
-                for (i = 3; i <= NF; i++) desc = desc " - " $i
-                sub(/^# /, "", sig)
+        _halp_box functions
+        awk -v c="$cyan" -v d="$dim" -v r="$reset" -v b="$bold" -v m="$yellow" '
+            { lines[NR] = $0 }
+            END {
+                for (i = 1; i <= NR; i++) {
+                    line = lines[i]
 
-                cmd = sig
-                sub(/[[:space:]].*/, "", cmd)
-                sub(/\[.*/, "", cmd)
-                if (cmd == "cmd" || cmd == "halp") next
+                    # "#" / "# section name" / "#" -- section header block
+                    if (line == "#" && i + 2 <= NR && lines[i+1] ~ /^# ./ && lines[i+2] == "#") {
+                        name = lines[i+1]
+                        sub(/^# /, "", name)
+                        printf "\n  %s%s%s%s\n", b, m, name, r
+                        i += 2
+                        continue
+                    }
 
-                mnemonic = ""
-                if (desc ~ / -- /) {
-                    n = split(desc, parts, / -- /)
-                    mnemonic = parts[1]
-                    desc = parts[2]
-                    for (i = 3; i <= n; i++) desc = desc " -- " parts[i]
-                    gsub(/^"|"$/, "", mnemonic)
+                    if (line !~ /^# [[:alnum:]_]/) continue
+                    n = split(line, f, " - ")
+                    if (n <= 1) continue
+
+                    sig = f[1]
+                    desc = f[2]
+                    for (k = 3; k <= n; k++) desc = desc " - " f[k]
+                    sub(/^# /, "", sig)
+
+                    cmd = sig
+                    sub(/[[:space:]].*/, "", cmd)
+                    sub(/\[.*/, "", cmd)
+                    if (cmd == "cmd" || cmd == "halp") continue
+
+                    mnemonic = ""
+                    if (desc ~ / -- /) {
+                        nn = split(desc, parts, / -- /)
+                        mnemonic = parts[1]
+                        desc = parts[2]
+                        for (k = 3; k <= nn; k++) desc = desc " -- " parts[k]
+                        gsub(/^"|"$/, "", mnemonic)
+                    }
+                    if (mnemonic) mnemonic = "\"" mnemonic "\""
+
+                    printf "    %s%-16s%s %s%-43s%s %s%s%s\n", c, cmd, r, d, desc, r, d, mnemonic, r
                 }
-                if (mnemonic) mnemonic = "\"" mnemonic "\""
-
-                printf "  %s%-16s%s %s%-45s%s %s%s%s\n", c, cmd, r, d, desc, r, d, mnemonic, r
             }
         ' "$zsh_dir/config/fns.sh"
 
-        printf "\n%baliases%b\n" "$bold$magenta" "$reset"
-        awk -v c="$green" -v d="$dim" -v r="$reset" -v width="$width" '
-            /^alias [[:alnum:]_:-]+=/ {
-                line = $0
-                sub(/^alias /, "", line)
-                name = line
-                sub(/=.*/, "", name)
-                cmd = line
-                sub(/^[^=]+=/, "", cmd)
-                gsub(/^'\''|'\''$/, "", cmd)
-                gsub(/^"|"$/, "", cmd)
-                if (length(cmd) > width - 22) cmd = substr(cmd, 1, width - 25) "..."
-                printf "  %s%-16s%s %s%s%s\n", c, name, r, d, cmd, r
+        printf "\n"
+        _halp_box aliases
+        awk -v c="$green" -v d="$dim" -v r="$reset" -v b="$bold" -v m="$yellow" -v width="$width" '
+            { lines[NR] = $0 }
+            END {
+                for (i = 1; i <= NR; i++) {
+                    line = lines[i]
+
+                    if (line == "#" && i + 2 <= NR && lines[i+1] ~ /^# ./ && lines[i+2] == "#") {
+                        name = lines[i+1]
+                        sub(/^# /, "", name)
+                        printf "\n  %s%s%s%s\n", b, m, name, r
+                        i += 2
+                        continue
+                    }
+
+                    if (line !~ /^alias [[:alnum:]_:-]+=/) continue
+                    sub(/^alias /, "", line)
+                    name = line
+                    sub(/=.*/, "", name)
+                    cmd = line
+                    sub(/^[^=]+=/, "", cmd)
+                    gsub(/^'\''|'\''$/, "", cmd)
+                    gsub(/^"|"$/, "", cmd)
+                    if (length(cmd) > width - 24) cmd = substr(cmd, 1, width - 27) "..."
+                    printf "    %s%-16s%s %s%s%s\n", c, name, r, d, cmd, r
+                }
             }
         ' "$zsh_dir/config/aliases.sh"
     } | if [[ -n "$pattern" ]]; then
@@ -364,6 +424,7 @@ halp() {
     else
         cat
     fi
-}
 
+    unfunction _halp_box
+}
 
