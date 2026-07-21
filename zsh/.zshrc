@@ -50,8 +50,8 @@ autoload -Uz compinit; compinit
 
 # basic completer
 zstyle ':completion:*' completer _complete
-# case-insensitive matchin'
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
+# case-insensitive matchin', then partial-word (f-b -> foo-bar), then fuzzy substring anywhere (au -> 20260712-audit.md)
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 # ensure tab completion shows both directories and files
 zstyle ':completion:*' file-patterns '*:all-files *(-/):directories'
 # enable menu selection for completion menu

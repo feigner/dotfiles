@@ -100,30 +100,35 @@ gcbr() {
     fi
 }
 
-# gd [git diff args...] [--side] [--vert]
+# gdd [git diff args...] [-c|--cached] [-s|--side] [-h|--horiz]
 # Browse changed files in fzf and preview the selected diff (delta).
 # Examples:
-# - gd                         # unstaged changes
-# - gd --cached                # staged changes
-# - gd main...HEAD             # branch/range diff
-# - gd path/to/file            # one tracked file
-# - gd --side                  # side-by-side preview
-# - gd --vert                  # preview stacked above the file list (narrow terminals)
-gd() {
+# - gdd                         # unstaged changes
+# - gdd -c, gdd --cached        # staged changes
+# - gdd main...HEAD             # branch/range diff
+# - gdd path/to/file            # one tracked file
+# - gdd -s, gdd --side          # side-by-side preview
+# - gdd -h, gdd --horiz         # preview pane on the right
+# Keys: ctrl-a stage, ctrl-o open, ctrl-r refresh
+gdd() {
     local -a git_args
+    local -a fzf_layout_args
     local arg
     local delta_features="${DELTA_FEATURES:-}"
-    local preview_position="right"
-    local preview_size="70%"
+    local layout="vert"
+    local preview_window="up,90%,wrap-word"
 
     for arg in "$@"; do
         case "$arg" in
-            --side)
+            -c|--cached)
+                git_args+=(--cached)
+                ;;
+            -s|--side)
                 delta_features="${delta_features:+${delta_features} }side-by-side"
                 ;;
-            --vert)
-                preview_position="up"
-                preview_size="90%"
+            -h|--horiz)
+                layout="horiz"
+                preview_window="right,70%,wrap-word"
                 ;;
             *)
                 git_args+=("$arg")
@@ -131,11 +136,25 @@ gd() {
         esac
     done
 
+    # vert default handling
+    if [[ "$layout" == "vert" ]]; then
+        # Keep fzf fullscreen, but resize the preview so the file list shows up to 10 matches.
+        fzf_layout_args=(
+            --sync
+            --bind 'start,result,resize:transform:
+                list_lines=${FZF_MATCH_COUNT:-${FZF_TOTAL_COUNT:-0}}
+                [ "$list_lines" -gt 10 ] && list_lines=10
+                preview_lines=$((FZF_LINES - list_lines - 4))
+                [ "$preview_lines" -lt 1 ] && preview_lines=1
+                printf "change-preview-window(up,%s,wrap-word)" "$preview_lines"'
+        )
+    fi
+
     local preview_git_args=""
     local -a list_git_args=("${git_args[@]}")
 
     # A lone tracked file is a pathspec. Use it to restrict the file list,
-    # but keep it out of the preview prefix; preview adds `-- {-1}` itself.
+    # but keep it out of the preview prefix; preview adds `-- {}` itself.
     if (( ${#git_args[@]} == 1 )) && git ls-files --error-unmatch -- "${git_args[1]}" >/dev/null 2>&1; then
         list_git_args=(-- "${git_args[1]}")
         git_args=()
@@ -148,17 +167,26 @@ gd() {
     local files
     files=$(git diff --color=always --name-only "${list_git_args[@]}")
     if [[ -z "$files" ]]; then
-        echo "gd: no changes to show" >&2
+        echo "gdd: no changes to show" >&2
         return 1
     fi
+
+    local list_command="git diff --color=always --name-only"
+    if (( ${#list_git_args[@]} )); then
+        list_command+=" ${(j: :)${(q)list_git_args}}"
+    fi
+    list_command+=" || true"
 
     print -r -- "$files" |
         DELTA_FEATURES="$delta_features" fzf \
             --ansi \
             --height=100% \
+            --info-command='printf "\033[33mΔ%s\033[m" "$FZF_TOTAL_COUNT"' \
             --margin=0 \
-            --preview "git diff --color=always ${preview_git_args}-- ':(top)'{-1} | delta --width=\${FZF_PREVIEW_COLUMNS}" \
-            --preview-window="${preview_position},${preview_size},wrap-word" || true
+            --bind "ctrl-a:execute-silent(git add -- {})+reload($list_command)+refresh-preview,ctrl-o:execute(\${EDITOR:-vim} {})+reload($list_command)+refresh-preview,ctrl-r:reload($list_command)+refresh-preview" \
+            "${fzf_layout_args[@]}" \
+            --preview "git diff --color=always ${preview_git_args}-- ':(top)'{} | delta --width=\${FZF_PREVIEW_COLUMNS}" \
+            --preview-window="$preview_window" || true
 }
 
 
@@ -243,3 +271,4 @@ function list_colors() {
     printf "%3s: \x1b[38;5;${i}m██████████ Wu-Tang is for the children.\x1b[0m\n" "${i} "
   done
 }
+

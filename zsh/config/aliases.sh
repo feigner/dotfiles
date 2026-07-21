@@ -20,6 +20,7 @@ alias gprs='git pull --rebase --autostash'
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold magenta)<%an>%Creset'"
 alias glogg="git --no-pager log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 alias gap="git add -p"
+alias gd="git diff"
 alias gdt="git difftool"
 
 # vim
