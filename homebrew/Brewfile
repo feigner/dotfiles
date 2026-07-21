@@ -91,6 +91,8 @@ brew "git"
 brew "git-delta"
 # Quickly rewrite git repository history
 brew "git-filter-repo"
+# lazygit
+brew "lazygit"
 # LLM inference in C/C++
 brew "llama.cpp"
 # Cross-platform library for real-time MIDI I/O
@@ -194,6 +196,7 @@ cask "reamp"
 cask "soundsource"
 # Multimedia player
 cask "vlc"
+
 
 mas 'Xcode', id: 497799835
 mas '1Password', id: 1333542190
