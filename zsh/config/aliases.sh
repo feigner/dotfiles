@@ -26,6 +26,7 @@ alias glogg="git --no-pager log --graph --pretty=format:'%Cred%h%Creset -%C(yell
 alias gap="git add -p"
 alias gd="git diff"
 alias gdt="git difftool"
+alias lg="lazygit"
 
 #
 # tmux
