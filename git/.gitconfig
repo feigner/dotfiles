@@ -33,6 +33,7 @@
 
 [diff]
     tool = nvimdiff
+    colorMoved = default
 
 [difftool]
     prompt = false
