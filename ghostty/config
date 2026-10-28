@@ -25,8 +25,5 @@ quick-terminal-size=50%
 # cmd-click to open links pls
 link-url = true
 
-# work around for no-colors on mac -> linux :/
-term = xterm-256color
-
 # cursor_warp tweak
 custom-shader = ./shaders/cursor_eff.glsl
